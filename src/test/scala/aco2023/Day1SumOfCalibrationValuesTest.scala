@@ -43,4 +43,8 @@ class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
     assert(sumOfCalibrationValues.calibrationValueWithWords("two") === 22)
   }
 
+  "Two spelt numbers" should "are used for the first and last number" in {
+    assert(sumOfCalibrationValues.calibrationValueWithWords("twothree") === 23)
+  }
+
 }
