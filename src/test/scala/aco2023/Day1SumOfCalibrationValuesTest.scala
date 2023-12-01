@@ -21,4 +21,10 @@ class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
     assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("4") === 44)
   }
 
+  "Examples given" should "sum as expected" in {
+    assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("pqr3stu8vwx") === 38)
+    assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("a1b2c3d4e5f") === 15)
+    assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("treb7uchet" ) === 77)
+  }
+
 }
