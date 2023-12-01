@@ -36,4 +36,11 @@ class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
     println(source.getLines().map(line => sumOfCalibrationValues.calibrationValue(line)).sum)
     source.close()
   }
+
+  // Part 2
+
+  "A single spelt number" should "should be used for both the first and last number" in {
+    assert(sumOfCalibrationValues.calibrationValueWithWords("two") === 22)
+  }
+
 }
