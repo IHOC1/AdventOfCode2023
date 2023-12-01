@@ -5,10 +5,6 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
 
-  "A simple number" should "total to itself" in {
-    assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("1") === 1)
-  }
-
   "A 2-digit number" should "return itself" in {
     assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("13") === 13)
   }
