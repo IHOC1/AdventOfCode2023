@@ -17,4 +17,8 @@ class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
     assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("1abc2") === 12)
   }
 
+  "If more than 2 digits" should "use only the first and last" in {
+    assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("123") === 13)
+  }
+
 }
