@@ -9,4 +9,8 @@ class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
     assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("1") === 1)
   }
 
+  "A 2-digit number" should "return itself" in {
+    assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("13") === 13)
+  }
+
 }
