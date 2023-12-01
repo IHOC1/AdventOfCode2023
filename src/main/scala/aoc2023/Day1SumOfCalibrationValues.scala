@@ -7,6 +7,11 @@ class Day1SumOfCalibrationValues {
     digits.head.asDigit * 10 + digits.last.asDigit
   }
 
+  def toNumber(str: String, numbers: Map[String, Int]): Option[Int] =
+    numbers.keys.
+      find(num => str.startsWith(num)).
+      map(num => numbers(num))
+
   def calibrationValueWithWords(text: String): Int = {
     val numbers = Map(
       "one"   -> 1,
@@ -28,8 +33,18 @@ class Day1SumOfCalibrationValues {
       "8" -> 8,
       "9" -> 9
     )
-    val digit = numbers(text)
-    digit * 10 + digit
+
+    val firstDigit: Int = Range(0, text.length).
+      map(i => text.substring(i)).
+      map(str => toNumber(str, numbers)).
+      find(num => num.isDefined).get.get
+
+    val lastDigit: Int = Range(0, text.length).reverse.
+      map(i => text.substring(i)).
+      map(str => toNumber(str, numbers)).
+      find(num => num.isDefined).get.get
+
+    firstDigit * 10 + lastDigit
   }
 
 }
