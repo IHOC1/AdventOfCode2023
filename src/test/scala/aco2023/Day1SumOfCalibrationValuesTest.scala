@@ -47,4 +47,14 @@ class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
     assert(sumOfCalibrationValues.calibrationValueWithWords("twothree") === 23)
   }
 
+  "Part 2 Examples given" should "sum as expected" in {
+    assert(sumOfCalibrationValues.calibrationValueWithWords("two1nine"        ) === 29)
+    assert(sumOfCalibrationValues.calibrationValueWithWords("eightwothree"    ) === 83)
+    assert(sumOfCalibrationValues.calibrationValueWithWords("abcone2threexyz" ) === 13)
+    assert(sumOfCalibrationValues.calibrationValueWithWords("xtwone3four"     ) === 24)
+    assert(sumOfCalibrationValues.calibrationValueWithWords("4nineeightseven2") === 42)
+    assert(sumOfCalibrationValues.calibrationValueWithWords("zoneight234"     ) === 14)
+    assert(sumOfCalibrationValues.calibrationValueWithWords("7pqrstsixteen"   ) === 76)
+  }
+
 }
