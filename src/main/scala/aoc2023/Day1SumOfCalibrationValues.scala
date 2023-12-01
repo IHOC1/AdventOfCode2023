@@ -2,9 +2,9 @@ package aoc2023
 
 class Day1SumOfCalibrationValues {
 
-  def sumOfCalibrationValue(str: String): Int = str.toList.filter(_.isDigit) match {
-    case first +: _ :+ last => (first.toString + last).toInt
-    case _ => 0
+  def sumOfCalibrationValue(str: String): Int = {
+    val digits = str.toList.filter(_.isDigit)
+    digits.head.asDigit * 10 + digits.last.asDigit
   }
 
 }
