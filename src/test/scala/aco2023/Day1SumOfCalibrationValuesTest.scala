@@ -5,26 +5,28 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
 
+  val sumOfCalibrationValues = new Day1SumOfCalibrationValues()
+
   "A 2-digit number" should "return itself" in {
-    assert(new Day1SumOfCalibrationValues().calibrationValue("13") === 13)
+    assert(sumOfCalibrationValues.calibrationValue("13") === 13)
   }
 
   "Non-digit characters" should "be ignored" in {
-    assert(new Day1SumOfCalibrationValues().calibrationValue("1abc2") === 12)
+    assert(sumOfCalibrationValues.calibrationValue("1abc2") === 12)
   }
 
   "If more than 2 digits" should "use only the first and last" in {
-    assert(new Day1SumOfCalibrationValues().calibrationValue("123") === 13)
+    assert(sumOfCalibrationValues.calibrationValue("123") === 13)
   }
 
   "Single digit values" should "use that digit for both first and last" in {
-    assert(new Day1SumOfCalibrationValues().calibrationValue("4") === 44)
+    assert(sumOfCalibrationValues.calibrationValue("4") === 44)
   }
 
   "Examples given" should "sum as expected" in {
-    assert(new Day1SumOfCalibrationValues().calibrationValue("pqr3stu8vwx") === 38)
-    assert(new Day1SumOfCalibrationValues().calibrationValue("a1b2c3d4e5f") === 15)
-    assert(new Day1SumOfCalibrationValues().calibrationValue("treb7uchet" ) === 77)
+    assert(sumOfCalibrationValues.calibrationValue("pqr3stu8vwx") === 38)
+    assert(sumOfCalibrationValues.calibrationValue("a1b2c3d4e5f") === 15)
+    assert(sumOfCalibrationValues.calibrationValue("treb7uchet" ) === 77)
   }
 
 }
