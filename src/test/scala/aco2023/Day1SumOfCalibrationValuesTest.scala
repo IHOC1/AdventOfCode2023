@@ -57,4 +57,12 @@ class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
     assert(sumOfCalibrationValues.calibrationValueWithWords("7pqrstsixteen"   ) === 76)
   }
 
+  "Part 2" should "Give the correct sum" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day1CalibrationValues.txt")
+    println(source.getLines().map(line => sumOfCalibrationValues.calibrationValueWithWords(line)).sum)
+    source.close()
+  }
+
 }
