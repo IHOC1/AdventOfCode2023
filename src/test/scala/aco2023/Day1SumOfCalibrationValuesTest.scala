@@ -13,4 +13,8 @@ class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
     assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("13") === 13)
   }
 
+  "Non-digit characters" should "be ignored" in {
+    assert(new Day1SumOfCalibrationValues().sumOfCalibrationValue("1abc2") === 12)
+  }
+
 }
