@@ -10,6 +10,12 @@ case class Game(red: Int, green: Int, blue: Int) {
 
 object Game {
 
+  def parseLine(line: String): (Int, List[Game]) = {
+    val parts = line.split(": ")
+    val gameNumber = parts(0).split(" ")(1).toInt
+    gameNumber -> parts(1).split("; ").map((game: String) => parseGame(game)).toList
+  }
+
   def parseGame(str: String): Game = {
     str.split(",").
       map(p => p.trim).

@@ -24,4 +24,11 @@ class GameTest extends AnyFlatSpec {
     assert(Game.parseGame("1 red, 2 green, 6 blue") === new Game(1, 2, 6))
   }
 
+  "A line " should "be parsable" in {
+    assert(Game.parseLine("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green") ===
+      (1 -> List(new Game(4, 0, 3),
+                 new Game(1, 2, 6),
+                 new Game(0, 2, 0))))
+  }
+
 }
