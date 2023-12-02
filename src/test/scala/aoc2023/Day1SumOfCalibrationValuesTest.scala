@@ -1,6 +1,5 @@
-package aco2023
+package aoc2023
 
-import aoc2023.Day1SumOfCalibrationValues
 import org.scalatest.flatspec.AnyFlatSpec
 
 class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
