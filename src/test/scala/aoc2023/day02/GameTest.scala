@@ -20,4 +20,8 @@ class GameTest extends AnyFlatSpec {
     assert(new Game(2, 2, 5).isPossible(new Game(3, 3, 4)) === false)
   }
 
+  "A simple game " should "be parsable" in {
+    assert(Game.parseGame("1 red, 2 green, 6 blue") === new Game(1, 2, 6))
+  }
+
 }
