@@ -44,5 +44,11 @@ class GameTest extends AnyFlatSpec {
     source.close()
   }
 
+  // Part 2
+
+  "Game merging" should "take the highest of each element" in {
+    assert(new Game(4, 2, 1).merge(new Game(3, 2, 2)) === new Game(4, 2, 2))
+  }
+
 
 }

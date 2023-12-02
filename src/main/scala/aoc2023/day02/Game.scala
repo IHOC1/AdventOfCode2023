@@ -1,11 +1,20 @@
 package aoc2023.day02
 
+import scala.math
+import scala.math._
+
 case class Game(red: Int, green: Int, blue: Int) {
 
   def isPossible(limit: Game): Boolean =
       red   <= limit.red   &&
       green <= limit.green &&
       blue  <= limit.blue
+
+  def merge(game: Game): Game =
+    new Game(
+      max(game.red,   red),
+      max(game.green, green),
+      max(game.blue,  blue))
 }
 
 object Game {
