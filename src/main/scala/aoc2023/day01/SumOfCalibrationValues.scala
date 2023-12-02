@@ -1,6 +1,6 @@
-package aoc2023
+package aoc2023.day01
 
-class Day1SumOfCalibrationValues {
+class SumOfCalibrationValues {
 
   def calibrationValue(text: String): Int = {
     val digits = text.toList.filter(_.isDigit)

@@ -1,10 +1,10 @@
-package aoc2023
+package aoc2023.day01
 
 import org.scalatest.flatspec.AnyFlatSpec
 
-class Day1SumOfCalibrationValuesTest extends AnyFlatSpec {
+class SumOfCalibrationValuesTest extends AnyFlatSpec {
 
-  val sumOfCalibrationValues = new Day1SumOfCalibrationValues()
+  val sumOfCalibrationValues = new SumOfCalibrationValues()
 
   "A 2-digit number" should "return itself" in {
     assert(sumOfCalibrationValues.calibrationValue("13") === 13)
