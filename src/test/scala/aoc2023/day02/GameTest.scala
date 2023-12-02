@@ -50,5 +50,19 @@ class GameTest extends AnyFlatSpec {
     assert(new Game(4, 2, 1).merge(new Game(3, 2, 2)) === new Game(4, 2, 2))
   }
 
+  "Part 2 " should "Give the correct sum" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day02Games.txt")
+    val sum = source.getLines().
+      map(line => Game.parseLine(line)._2).
+      map(games => games.reduce((g1, g2) => g1.merge(g2))).
+      map(game => game.power()).
+      sum
+
+    println(sum)
+    source.close()
+  }
+
 
 }

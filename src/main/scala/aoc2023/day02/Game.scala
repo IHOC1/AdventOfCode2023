@@ -1,6 +1,5 @@
 package aoc2023.day02
 
-import scala.math
 import scala.math._
 
 case class Game(red: Int, green: Int, blue: Int) {
@@ -15,6 +14,8 @@ case class Game(red: Int, green: Int, blue: Int) {
       max(game.red,   red),
       max(game.green, green),
       max(game.blue,  blue))
+
+  def power(): Int = red * green * blue
 }
 
 object Game {
