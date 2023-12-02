@@ -31,4 +31,18 @@ class GameTest extends AnyFlatSpec {
                  new Game(0, 2, 0))))
   }
 
+  "Part 1 " should "Give the correct sum" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day02Games.txt")
+    val limit = Game(12, 13, 14)
+    val sum = source.getLines().
+      map(line => Game.parseLine(line)).
+      filter(l => l._2.forall(g => g.isPossible(limit))).
+      map(l => l._1).sum
+    println(sum)
+    source.close()
+  }
+
+
 }
