@@ -29,5 +29,10 @@ object EnginePartNumbers {
 case class Row(numbers: Seq[PartNumber] = Seq(),
                symbols: Seq[Symbol    ] = Seq())
 
-case class PartNumber(from: Int, to: Int, number: Int)
+case class PartNumber(from: Int, to: Int, number: Int) {
+
+  def nextToSymbolOnSameLine(symbols: Seq[Symbol]): Boolean = true
+
+}
+
 case class Symbol(position: Int)
