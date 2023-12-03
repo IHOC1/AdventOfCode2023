@@ -28,4 +28,8 @@ class EnginePartNumbersTest() extends AnyFlatSpec {
     assert(EnginePartNumbers.parseLine("..$..") === Row(symbols = Seq(Symbol(2))))
   }
 
+  "Multiple symbols on a line" should "be parsed and located" in {
+    assert(EnginePartNumbers.parseLine("..#...^...") === Row(symbols = Seq(Symbol(2), Symbol(6))))
+  }
+
 }
