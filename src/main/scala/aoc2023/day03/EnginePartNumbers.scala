@@ -20,6 +20,8 @@ object EnginePartNumbers {
   }
 }
 
-case class Row(numbers: Seq[PartNumber])
+case class Row(numbers: Seq[PartNumber] = Seq(),
+               symbols: Seq[Symbol    ] = Seq())
 
 case class PartNumber(from: Int, to: Int, number: Int)
+case class Symbol(position: Int)
