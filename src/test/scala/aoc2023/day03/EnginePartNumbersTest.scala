@@ -47,4 +47,16 @@ class EnginePartNumbersTest() extends AnyFlatSpec {
     assert(row.numbers(0).nextToSymbolOnSameLine(row.symbols) === false)
   }
 
+  "Engine part numbers immediately after symbols on an adjacent line" should "be flagged as true engine part numbers " in {
+    val row = EnginePartNumbers.parseLine(".2")
+    val adjacentRow = EnginePartNumbers.parseLine("#.")
+    assert(row.numbers(0).nextToSymbolOnAdjacentLine(adjacentRow.symbols) === true)
+  }
+
+  "Engine part numbers immediately before symbols on an adjacent line" should "be flagged as true engine part numbers " in {
+    val row = EnginePartNumbers.parseLine("2.")
+    val adjacentRow = EnginePartNumbers.parseLine(".#")
+    assert(row.numbers(0).nextToSymbolOnAdjacentLine(adjacentRow.symbols) === true)
+  }
+
 }
