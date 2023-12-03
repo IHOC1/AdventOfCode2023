@@ -25,12 +25,12 @@ class EnginePartNumbersTest() extends AnyFlatSpec {
 
 
   "A symbol on a line" should "be parsed and located" in {
-    assert(parseLine("#") === Row(symbols = Seq(Symbol(0))))
-    assert(parseLine("..$..") === Row(symbols = Seq(Symbol(2))))
+    assert(parseLine("#") === Row(symbols = Seq(Symbol("#", 0))))
+    assert(parseLine("..$..") === Row(symbols = Seq(Symbol("$", 2))))
   }
 
   "Multiple symbols on a line" should "be parsed and located" in {
-    assert(parseLine("..#...^...") === Row(symbols = Seq(Symbol(2), Symbol(6))))
+    assert(parseLine("..#...^...") === Row(symbols = Seq(Symbol("#", 2), Symbol("^", 6))))
   }
 
   "Engine part numbers immediately after symbols on the same line" should "be flagged as true engine part numbers " in {
@@ -90,4 +90,19 @@ class EnginePartNumbersTest() extends AnyFlatSpec {
     source.close()
   }
 
+  // Part 2
+
+  "Part 2 " should "Give the correct sum for example" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day03SmallSampleEnginePartNumbers.txt")
+    val rows: Seq[Row] = source.getLines().
+      map((line: String) => parseLine(line)).toList
+
+    val sumGearRatios = EnginePartNumbers.sumGearRatios(rows)
+
+    assert(sumGearRatios === 467835)
+
+    source.close()
+  }
 }
