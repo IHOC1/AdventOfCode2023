@@ -49,12 +49,12 @@ case class PartNumber(from: Int, to: Int, number: Int) {
   def nextToSymbolOnSameLine(symbols: Seq[Symbol]): Boolean =
     symbols.exists(symbol => isImmediatelyBefore(symbol) || isImmediatelyAfter(symbol))
 
+  def nextToSymbolOnAdjacentLine(symbols: Seq[Symbol]): Boolean =
+    symbols.exists(symbol => isImmediatelyBefore(symbol) || isImmediatelyAfter(symbol) || isWithin(symbol))
+
   private def isImmediatelyBefore(symbol: Symbol) = symbol.position == (from - 1)
   private def isImmediatelyAfter(symbol: Symbol)  = symbol.position == (to   + 1)
   private def isWithin(symbol: Symbol)            = from <= symbol.position && symbol.position <= to
-
-  def nextToSymbolOnAdjacentLine(symbols: Seq[Symbol]): Boolean =
-    symbols.exists(symbol => isImmediatelyBefore(symbol) || isImmediatelyAfter(symbol) || isWithin(symbol))
 
 }
 
