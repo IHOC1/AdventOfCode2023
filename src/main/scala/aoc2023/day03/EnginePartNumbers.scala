@@ -6,7 +6,7 @@ class EnginePartNumbers {
 
 object EnginePartNumbers {
 
-  def parseLine(line: String): Row = Row(Seq(PartNumber(0, 2, 467)))
+  def parseLine(line: String): Row = Row(Seq(PartNumber(0, 2, line.toInt)))
 
 }
 
