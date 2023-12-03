@@ -8,6 +8,21 @@ class EnginePartNumbers {
 
 object EnginePartNumbers {
 
+  def sumGenuineEnginePartNumbers(rows: Seq[Row]) = {
+    val sum = Range(0, rows.length).
+      flatMap((rowNum: Int) => {
+        val previousRow = rows.lift(rowNum - 1)
+        val currentRow  = rows(rowNum)
+        val nextRow     = rows.lift(rowNum + 1)
+        currentRow.numbers.
+          filter(
+            partNumber => partNumber.nextToSymbolOnSameLine(currentRow.symbols) ||
+              partNumber.nextToSymbolOnAdjacentLine(previousRow.map(_.symbols).getOrElse(Seq())) ||
+              partNumber.nextToSymbolOnAdjacentLine(    nextRow.map(_.symbols).getOrElse(Seq())))
+      }).map(_.number).sum
+    sum
+  }
+
   def parseLine(line: String): Row = {
     Row(partNumbers(line), symbols(line))
   }
