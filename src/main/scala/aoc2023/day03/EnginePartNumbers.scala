@@ -31,7 +31,7 @@ case class Row(numbers: Seq[PartNumber] = Seq(),
 
 case class PartNumber(from: Int, to: Int, number: Int) {
 
-  def nextToSymbolOnSameLine(symbols: Seq[Symbol]): Boolean = true
+  def nextToSymbolOnSameLine(symbols: Seq[Symbol]): Boolean = symbols.map(_.position).exists((p: Int) => p == from - 1)
 
 }
 

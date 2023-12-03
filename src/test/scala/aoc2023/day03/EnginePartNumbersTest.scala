@@ -32,9 +32,14 @@ class EnginePartNumbersTest() extends AnyFlatSpec {
     assert(EnginePartNumbers.parseLine("..#...^...") === Row(symbols = Seq(Symbol(2), Symbol(6))))
   }
 
-  "Engine part numbers next to symbols on the same line" should "be flagged as true engine part numbers " in {
+  "Engine part numbers immediately after symbols on the same line" should "be flagged as true engine part numbers " in {
     val row = EnginePartNumbers.parseLine("#2")
     assert(row.numbers(0).nextToSymbolOnSameLine(row.symbols) === true)
+  }
+
+  "Engine part numbers not next to symbols on the same line" should "not be flagged as true engine part numbers " in {
+    val row = EnginePartNumbers.parseLine("#.2")
+    assert(row.numbers(0).nextToSymbolOnSameLine(row.symbols) === false)
   }
 
 }
