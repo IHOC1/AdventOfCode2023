@@ -105,4 +105,19 @@ class EnginePartNumbersTest() extends AnyFlatSpec {
 
     source.close()
   }
+
+  "Part 2" should "Give the correct sum" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day03EnginePartNumbers.txt")
+    val rows: Seq[Row] = source.getLines().
+      map((line: String) => parseLine(line)).toList
+
+    val sumGearRatios = EnginePartNumbers.sumGearRatios(rows)
+
+    println(sumGearRatios)
+
+    source.close()
+  }
+
 }
