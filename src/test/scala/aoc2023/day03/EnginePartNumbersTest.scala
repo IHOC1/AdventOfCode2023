@@ -9,4 +9,9 @@ class EnginePartNumbersTest() extends AnyFlatSpec {
     assert(EnginePartNumbers.parseLine("512") === Row(numbers = Seq(PartNumber(from = 0, to = 2, number = 512))))
   }
 
+  "Non digit characters" should "be ignored when parsing part numbers" in {
+    assert(EnginePartNumbers.parseLine(".467") === Row(numbers = Seq(PartNumber(from = 1, to = 3, number = 467))))
+    assert(EnginePartNumbers.parseLine("512.") === Row(numbers = Seq(PartNumber(from = 0, to = 2, number = 512))))
+  }
+
 }
