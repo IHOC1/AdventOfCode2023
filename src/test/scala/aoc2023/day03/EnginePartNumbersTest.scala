@@ -14,4 +14,12 @@ class EnginePartNumbersTest() extends AnyFlatSpec {
     assert(EnginePartNumbers.parseLine("512.") === Row(numbers = Seq(PartNumber(from = 0, to = 2, number = 512))))
   }
 
+  "Multiple part numbers" should "be parsed from a line" in {
+    assert(EnginePartNumbers.parseLine(".467...23243.") ===
+      Row(numbers = Seq(
+        PartNumber(from = 1, to = 3, number = 467),
+        PartNumber(from = 7, to = 11, number = 23243)
+      )))
+  }
+
 }
