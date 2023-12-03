@@ -8,16 +8,22 @@ class EnginePartNumbers {
 
 object EnginePartNumbers {
 
-  val numberPattern = "[0-9]+".r
-
   def parseLine(line: String): Row = {
-    Row(partNumbers(line))
+    Row(partNumbers(line), symbols(line))
   }
+
+  private val numberPattern: Regex = "[0-9]+".r
 
   private def partNumbers(line: String) = {
     numberPattern.findAllIn(line).matchData.
       map((m: Regex.Match) => PartNumber(m.start, m.end - 1, m.group(0).toInt)).toSeq
   }
+
+  private val symbolPattern: Regex = "[^0-9.]".r
+
+  def symbols(line: String): Seq[Symbol] =
+    symbolPattern.findAllIn(line).matchData.
+      map((m: Regex.Match) => Symbol(m.start)).toSeq
 }
 
 case class Row(numbers: Seq[PartNumber] = Seq(),

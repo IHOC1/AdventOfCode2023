@@ -25,6 +25,7 @@ class EnginePartNumbersTest() extends AnyFlatSpec {
 
   "A symbol on a line" should "be parsed and located" in {
     assert(EnginePartNumbers.parseLine("#") === Row(symbols = Seq(Symbol(0))))
+    assert(EnginePartNumbers.parseLine("..$..") === Row(symbols = Seq(Symbol(2))))
   }
 
 }
