@@ -33,11 +33,7 @@ case class PartNumber(from: Int, to: Int, number: Int) {
 
   def nextToSymbolOnSameLine(symbols: Seq[Symbol]): Boolean =
     symbols.
-      exists(symbol => isImmediatelyBeforeOrAfter(symbol))
-
-  private def isImmediatelyBeforeOrAfter(symbol: Symbol) = {
-    isImmediatelyBefore(symbol) || isImmediatelyAfter(symbol)
-  }
+      exists(symbol => isImmediatelyBefore(symbol) || isImmediatelyAfter(symbol))
 
   private def isImmediatelyBefore(symbol: Symbol) = {
     symbol.position == from - 1
@@ -47,7 +43,13 @@ case class PartNumber(from: Int, to: Int, number: Int) {
     symbol.position == to + 1
   }
 
-  def nextToSymbolOnAdjacentLine(symbols: Seq[Symbol]): Boolean = nextToSymbolOnSameLine(symbols)
+  private def isWithin(symbol: Symbol) = {
+    from <= symbol.position && symbol.position <= to
+  }
+
+  def nextToSymbolOnAdjacentLine(symbols: Seq[Symbol]): Boolean =
+    symbols.
+      exists(symbol => isImmediatelyBefore(symbol) || isImmediatelyAfter(symbol) || isWithin(symbol))
 
 }
 
