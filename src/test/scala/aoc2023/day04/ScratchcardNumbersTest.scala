@@ -27,4 +27,18 @@ class ScratchcardNumbersTest extends AnyFlatSpec {
     assert(parseLine("Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11").score() === 0)
   }
 
+  "Part 1" should "Give the correct sum of winning points" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day04ScratchCards.txt")
+    val score: Int = source.getLines().
+      map((line: String) => parseLine(line)).
+      map(_.score()).
+      sum
+
+    assert(score === 25174)
+
+    source.close()
+  }
+
 }
