@@ -5,10 +5,12 @@ class ScratchcardNumbers {
 
 case class Card(cardNum: Int, winningNumbers: Seq[Int], numbersYouHave: Seq[Int]) {
 
-  def score(): Int = yourWinningNumbers().size match {
+  def score(): Int = numberOfYourWinningNumbers match {
     case 0 => 0
     case n => 1 << (n - 1)
   }
+
+  def numberOfYourWinningNumbers: Int = yourWinningNumbers().size
 
   def yourWinningNumbers(): Set[Int] = winningNumbers.toSet.intersect(numbersYouHave.toSet)
 
