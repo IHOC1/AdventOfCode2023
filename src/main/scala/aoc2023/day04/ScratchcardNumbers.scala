@@ -3,7 +3,11 @@ package aoc2023.day04
 class ScratchcardNumbers {
 }
 
-case class Card(cardNum: Int, winningNumbers: Seq[Int], numbersYouHave: Seq[Int])
+case class Card(cardNum: Int, winningNumbers: Seq[Int], numbersYouHave: Seq[Int]) {
+
+  def yourWinningNumbers(): Set[Int] = ???
+
+}
 
 object ScratchcardNumbers {
 

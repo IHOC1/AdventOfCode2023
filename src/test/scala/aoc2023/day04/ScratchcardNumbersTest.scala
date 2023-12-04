@@ -10,4 +10,8 @@ class ScratchcardNumbersTest extends AnyFlatSpec {
       Card(1, Seq(41, 48, 83, 86, 17), Seq(83, 86, 6, 31, 17, 9, 48, 53)))
   }
 
+  "A card" should "derive your winning numbers" in {
+      assert(Card(1, Seq(41, 48, 83, 86, 17), Seq(83, 86, 6, 31, 17, 9, 48, 53)).yourWinningNumbers() === Set(41, 48, 83, 86, 17))
+  }
+
 }
