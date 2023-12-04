@@ -33,4 +33,5 @@ object ScratchcardNumbers {
 
   private def parseNumbers(numbers: String): Seq[Int] = numbers.split(" +").map(_.toInt).toSeq
 
+  def sumOfWinningCards(cards: Seq[Card]): Int = ???
 }
