@@ -14,4 +14,8 @@ class ScratchcardNumbersTest extends AnyFlatSpec {
       assert(Card(1, Seq(41, 48, 83, 86, 17), Seq(83, 86, 6, 31, 17, 9, 48, 53)).yourWinningNumbers() === Set(48, 83, 86, 17))
   }
 
+  "A card" should "give you your score" in {
+      assert(Card(1, Seq(41, 48, 83, 86, 17), Seq(83, 86, 6, 31, 17, 9, 48, 53)).score() === 8)
+  }
+
 }
