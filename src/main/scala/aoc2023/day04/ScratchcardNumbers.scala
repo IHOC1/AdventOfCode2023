@@ -1,5 +1,8 @@
 package aoc2023.day04
 
+import scala.math
+import scala.math._
+
 class ScratchcardNumbers {
 }
 
@@ -15,6 +18,8 @@ case class Card(cardNum: Int, winningNumbers: Seq[Int], numbersYouHave: Seq[Int]
   def yourWinningNumbers(): Set[Int] = winningNumbers.toSet.intersect(numbersYouHave.toSet)
 
 }
+
+case class MultipleCards(num: Int, card: Card)
 
 object ScratchcardNumbers {
 
@@ -33,5 +38,28 @@ object ScratchcardNumbers {
 
   private def parseNumbers(numbers: String): Seq[Int] = numbers.split(" +").map(_.toInt).toSeq
 
-  def sumOfWinningCards(cards: Seq[Card]): Int = ???
+  def sumOfWinningCards(cards: Seq[Card]): Int = {
+    val cardCounts = cards.map(MultipleCards(1, _: Card))
+
+    sumOfWinningCards(0, cardCounts)
+  }
+
+  def sumOfWinningCards(sum: Int, cards: Seq[MultipleCards]): Int = {
+    if (cards.isEmpty)
+      sum
+    else {
+      val current = cards.head
+      val remaining = cards.tail
+
+      val numSubsequentCardsWon = current.card.numberOfYourWinningNumbers
+
+      val nextCardsWon = remaining.
+        take(numSubsequentCardsWon).
+        map((mc: MultipleCards) => mc.copy(num = mc.num + current.num))
+
+      val updatedRemaining = nextCardsWon ++ remaining.takeRight(max(remaining.size - numSubsequentCardsWon, 0))
+
+      sumOfWinningCards(sum + current.num, updatedRemaining)
+    }
+  }
 }
