@@ -1,6 +1,5 @@
 package aoc2023.day04
 
-import scala.math
 import scala.math._
 
 class ScratchcardNumbers {

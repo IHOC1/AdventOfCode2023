@@ -54,4 +54,20 @@ class ScratchcardNumbersTest extends AnyFlatSpec {
     assert(sumOfWinningCards(exampleCards) === 30)
   }
 
+  "Part 2" should "Give the correct sum of winning points" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day04ScratchCards.txt")
+    val cards = source.getLines().
+      map((line: String) => parseLine(line)).toSeq
+
+    val totalNumberOfCards = sumOfWinningCards(cards)
+
+    println(totalNumberOfCards)
+
+    assert(totalNumberOfCards === 6420979)
+
+    source.close()
+  }
+
 }
