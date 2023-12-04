@@ -5,7 +5,7 @@ class ScratchcardNumbers {
 
 case class Card(cardNum: Int, winningNumbers: Seq[Int], numbersYouHave: Seq[Int]) {
 
-  def yourWinningNumbers(): Set[Int] = ???
+  def yourWinningNumbers(): Set[Int] = winningNumbers.toSet.intersect(numbersYouHave.toSet)
 
 }
 
