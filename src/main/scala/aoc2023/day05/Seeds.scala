@@ -29,6 +29,8 @@ object Seeds {
 
 case class Almanac(seeds: Seq[Long], mappings: Option[Mappings]) {
 
+  def transformedSeedRanges(): Seq[Long] = rangedSeeds().map((seed: Long) => mappings.get.transform(seed))
+
   def transformedSeeds(): Seq[Long] = seeds.map((seed: Long) => mappings.get.transform(seed))
 
   def rangedSeeds(): Seq[Long] = seedsToRanges(seeds)

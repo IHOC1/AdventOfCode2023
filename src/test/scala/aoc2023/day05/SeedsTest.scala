@@ -54,4 +54,15 @@ class SeedsTest extends AnyFlatSpec {
     assert(almanac.rangedSeeds() === Seq(2, 3, 4, 6, 7))
   }
 
+  "Part 2 test almanac" should "give correct min value" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day05AlmanacExample.txt")
+    val almanac: Almanac = parseAlmanac(source.getLines().toSeq)
+
+    assert(almanac.transformedSeedRanges().min === 46)
+
+    source.close()
+  }
+
 }
