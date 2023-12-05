@@ -8,6 +8,6 @@ case class Mapping(destinationRangeStart: Int,
                    sourceRangeStart: Int,
                    rangeLength: Int) {
 
-  def correspondingNumber(sourceNumber: Int): Int = ???
+  def correspondingNumber(sourceNumber: Int): Int = destinationRangeStart + (sourceNumber - sourceRangeStart)
 
 }
