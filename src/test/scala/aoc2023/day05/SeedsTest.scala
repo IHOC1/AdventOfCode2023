@@ -32,4 +32,19 @@ class SeedsTest extends AnyFlatSpec {
     source.close()
   }
 
+  "Part 1 almanac" should "transform seed values correctly" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day05Almanac.txt")
+    val almanac: Almanac = parseAlmanac(source.getLines().toSeq)
+
+    val transformedSeeds = almanac.transformedSeeds()
+
+    println(transformedSeeds.min)
+
+    assert(transformedSeeds.min === 107430936)
+
+    source.close()
+  }
+
 }

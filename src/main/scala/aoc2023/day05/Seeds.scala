@@ -11,7 +11,7 @@ object Seeds {
             parseMappings(lines.tail.tail))
   }
 
-  def parseSeeds(line: String): Seq[Int] = line.split(": +")(1).split(" ").map(_.toInt).toSeq
+  def parseSeeds(line: String): Seq[Long] = line.split(": +")(1).split(" ").map(_.toLong).toSeq
 
   def parseMappings(lines: Seq[String]): Option[Mappings] = {
     if (lines.isEmpty)
@@ -20,28 +20,28 @@ object Seeds {
       val mappingsLines = lines.takeWhile(_.nonEmpty)
       val mappingsName = mappingsLines.head.split(" map\\:")(0)
       val mappings = mappingsLines.tail.
-        map(line => line.split(" ").map(_.toInt)).
+        map(line => line.split(" ").map(_.toLong)).
         map(nums => Mapping(nums(0), nums(1), nums(2)))
       Some(Mappings(mappingsName, mappings, parseMappings(lines.drop(mappingsLines.size + 1))))
     }
   }
 }
 
-case class Almanac(seeds: Seq[Int], mappings: Option[Mappings]) {
+case class Almanac(seeds: Seq[Long], mappings: Option[Mappings]) {
 
-  def transformedSeeds(): Seq[Int] = seeds.map((seed: Int) => mappings.get.transform(seed))
+  def transformedSeeds(): Seq[Long] = seeds.map((seed: Long) => mappings.get.transform(seed))
 }
 
 case class Mappings(name: String = "",
                     mappings: Seq[Mapping] = Seq(),
                     nextMappings: Option[Mappings] = None) {
 
-  def transform(num: Int): Int = nextMappings match {
+  def transform(num: Long): Long = nextMappings match {
     case None               => correspondingNumber(num)
     case Some(nextMappings) => nextMappings.transform(correspondingNumber(num))
   }
 
-  def correspondingNumber(num: Int): Int =
+  def correspondingNumber(num: Long): Long =
     mappings.
       find(_.isInRange(num)).
       map(_.correspondingNumber(num)).
@@ -49,12 +49,12 @@ case class Mappings(name: String = "",
 
 }
 
-case class Mapping(destinationRangeStart: Int,
-                   sourceRangeStart: Int,
-                   rangeLength: Int) {
+case class Mapping(destinationRangeStart: Long,
+                   sourceRangeStart: Long,
+                   rangeLength: Long) {
 
-  def isInRange(num: Int): Boolean = Range(sourceRangeStart, sourceRangeStart + rangeLength).contains(num)
+  def isInRange(num: Long): Boolean = (sourceRangeStart to sourceRangeStart + rangeLength).exclusive.contains(num)
 
-  def correspondingNumber(sourceNumber: Int): Int = destinationRangeStart + (sourceNumber - sourceRangeStart)
+  def correspondingNumber(sourceNumber: Long): Long = destinationRangeStart + (sourceNumber - sourceRangeStart)
 
 }
