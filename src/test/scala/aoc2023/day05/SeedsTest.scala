@@ -47,4 +47,11 @@ class SeedsTest extends AnyFlatSpec {
     source.close()
   }
 
+  // Part 2
+
+  "Part 2 test almanac" should "should generate the correct seed ranges" in {
+    val almanac = Almanac(Seq(2, 3, 6, 2), None)
+    assert(almanac.rangedSeeds() === Seq(2, 3, 4, 6, 7))
+  }
+
 }

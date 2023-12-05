@@ -30,6 +30,18 @@ object Seeds {
 case class Almanac(seeds: Seq[Long], mappings: Option[Mappings]) {
 
   def transformedSeeds(): Seq[Long] = seeds.map((seed: Long) => mappings.get.transform(seed))
+
+  def rangedSeeds(): Seq[Long] = seedsToRanges(seeds)
+
+  def seedsToRanges(seeds: Seq[Long]): Seq[Long] = {
+    if (seeds.isEmpty)
+      Seq()
+    else {
+      val start = seeds.head
+      val length = seeds.tail.head
+      (start to (start + length)).exclusive ++ seedsToRanges(seeds.tail.tail)
+    }
+  }
 }
 
 case class Mappings(name: String = "",
