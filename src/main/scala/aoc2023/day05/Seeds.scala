@@ -18,7 +18,7 @@ object Seeds {
       None
     else {
       val mappingsLines = lines.takeWhile(_.nonEmpty)
-      val mappingsName = mappingsLines.head.split(" map\\:")(0)
+      val mappingsName = mappingsLines.head.split(" map:")(0)
       val mappings = mappingsLines.tail.
         map(line => line.split(" ").map(_.toLong)).
         map(nums => Mapping(nums(0), nums(1), nums(2)))
