@@ -1,5 +1,8 @@
 package aoc2023.day05
 
+import scala.collection.immutable.NumericRange
+import scala.collection.parallel.CollectionConverters.IterableIsParallelizable
+
 class Seeds {
 
 }
@@ -29,19 +32,39 @@ object Seeds {
 
 case class Almanac(seeds: Seq[Long], mappings: Option[Mappings]) {
 
-  def transformedSeedRanges(): Seq[Long] = rangedSeeds().map((seed: Long) => mappings.get.transform(seed))
+  def minTransformedSeedValue(): Long = {
+    val value1 = rangedSeeds().par.
+      map(seedRange => {
+        println("Starting range " + seedRange)
+        val mappedSeedRange = seedRange.map((seed: Long) => {
+          if (seed % 10000000 == 0)
+            println(seedRange + " " + (seed - seedRange.start).toFloat / seedRange.size)
+          mappings.get.transform(seed)
+        }).min
+        println("Finished " + seedRange)
+        mappedSeedRange
+      })
+    println(value1)
+    value1.min
+  }
+
+  def transformedSeedRanges(): Seq[Long] = rangedSeeds().flatMap(range => range.par.map((seed: Long) => mappings.get.transform(seed)))
 
   def transformedSeeds(): Seq[Long] = seeds.map((seed: Long) => mappings.get.transform(seed))
 
-  def rangedSeeds(): Seq[Long] = seedsToRanges(seeds)
+  def rangedSeeds(): Seq[NumericRange.Exclusive[Long]] = {
+    val value = seedsToRanges(seeds)
+    println("Done generating seed ranges")
+    value
+  }
 
-  def seedsToRanges(seeds: Seq[Long]): Seq[Long] = {
+  def seedsToRanges(seeds: Seq[Long]): Seq[NumericRange.Exclusive[Long]] = {
     if (seeds.isEmpty)
       Seq()
     else {
       val start = seeds.head
       val length = seeds.tail.head
-      (start to (start + length)).exclusive ++ seedsToRanges(seeds.tail.tail)
+      Seq((start to (start + length)).exclusive) ++ seedsToRanges(seeds.tail.tail)
     }
   }
 }
@@ -67,7 +90,9 @@ case class Mapping(destinationRangeStart: Long,
                    sourceRangeStart: Long,
                    rangeLength: Long) {
 
-  def isInRange(num: Long): Boolean = (sourceRangeStart to sourceRangeStart + rangeLength).exclusive.contains(num)
+  private val range = (sourceRangeStart to sourceRangeStart + rangeLength).exclusive
+
+  def isInRange(num: Long): Boolean = range.contains(num)
 
   def correspondingNumber(sourceNumber: Long): Long = destinationRangeStart + (sourceNumber - sourceRangeStart)
 
