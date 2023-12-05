@@ -9,4 +9,11 @@ class SeedsTest extends AnyFlatSpec {
     assert(Mapping(50, 98, 2).correspondingNumber(99) === 51)
   }
 
+  "A mapping" should "indicated values in range" in {
+    assert(Mapping(50, 98, 2).isInRange(97) === false)
+    assert(Mapping(50, 98, 2).isInRange(98) === true)
+    assert(Mapping(50, 98, 2).isInRange(99) === true)
+    assert(Mapping(50, 98, 2).isInRange(100) === false)
+  }
+
 }
