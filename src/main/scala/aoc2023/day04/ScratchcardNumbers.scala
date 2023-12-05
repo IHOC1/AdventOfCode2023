@@ -1,5 +1,6 @@
 package aoc2023.day04
 
+import scala.annotation.tailrec
 import scala.math._
 
 class ScratchcardNumbers {
@@ -43,6 +44,7 @@ object ScratchcardNumbers {
     sumOfWinningCards(0, cardCounts)
   }
 
+  @tailrec
   def sumOfWinningCards(sum: Int, cards: Seq[MultipleCards]): Int = {
     if (cards.isEmpty)
       sum
