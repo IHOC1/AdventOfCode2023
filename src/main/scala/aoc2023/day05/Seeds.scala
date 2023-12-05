@@ -4,6 +4,15 @@ class Seeds {
 
 }
 
+object Seeds {
+  def parseAlmanac(lines: Iterator[String]): Almanac = ???
+}
+
+case class Almanac() {
+
+  def transformedSeeds() = ???
+}
+
 case class Mappings(mappings: Seq[Mapping]) {
 
   def correspondingNumber(num: Int): Int =

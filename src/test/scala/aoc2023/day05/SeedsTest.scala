@@ -1,5 +1,6 @@
 package aoc2023.day05
 
+import aoc2023.day05.Seeds.parseAlmanac
 import org.scalatest.flatspec.AnyFlatSpec
 
 class SeedsTest extends AnyFlatSpec {
@@ -19,5 +20,15 @@ class SeedsTest extends AnyFlatSpec {
   "Many mappings" should "transform all values in range" in {
     assert(Mappings(Seq(Mapping(50, 98, 2), Mapping(52, 50, 48))).correspondingNumber(98) === 50)
   }
+
+  "Part 1 test almanac" should "transform seed values correctly" in {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/Day05AlmanacExample.txt")
+    val almanac: Almanac = parseAlmanac(source.getLines())
+
+    assert(almanac.transformedSeeds() = Seq(82, 43, 86, 35))
+
+    source.close()  }
 
 }
