@@ -16,4 +16,8 @@ class SeedsTest extends AnyFlatSpec {
     assert(Mapping(50, 98, 2).isInRange(100) === false)
   }
 
+  "Many mappings" should "transform all values in range" in {
+    assert(Mappings(Seq(Mapping(50, 98, 2), Mapping(52, 50, 48))).correspondingNumber(98) === 50)
+  }
+
 }

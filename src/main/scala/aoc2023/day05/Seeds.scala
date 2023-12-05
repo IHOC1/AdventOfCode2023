@@ -4,6 +4,12 @@ class Seeds {
 
 }
 
+case class Mappings(mappings: Seq[Mapping]) {
+
+  def correspondingNumber(i: Int): Int = ???
+
+}
+
 case class Mapping(destinationRangeStart: Int,
                    sourceRangeStart: Int,
                    rangeLength: Int) {
