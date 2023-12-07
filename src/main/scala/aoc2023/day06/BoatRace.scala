@@ -4,8 +4,8 @@ class BoatRace {
 
 }
 
-case class Boat(racelasts: Int) {
+case class Boat(raceLasts: Int) {
 
-  def distance(buttonHeld: Int): Int = ???
+  def distance(buttonHeld: Int): Int = buttonHeld * (raceLasts - buttonHeld)
 
 }
