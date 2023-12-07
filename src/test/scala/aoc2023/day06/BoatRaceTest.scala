@@ -29,4 +29,16 @@ class BoatRaceTest extends AnyFlatSpec {
     BoatRace(duration = 74, record = 1022).winningButtonPresses())
   }
 
+  "Part 2 example" should "should give the correct answer" in {
+    println(
+    BoatRace(duration = 71530, record = 940200).winningButtonPresses()
+    )
+  }
+
+  "Part 2" should "should give the correct answer" in {
+    println(
+    BoatRace(duration = 59688274, record = 543102016641022L).winningButtonPresses()
+    )
+  }
+
 }
