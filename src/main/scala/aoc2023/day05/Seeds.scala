@@ -1,8 +1,5 @@
 package aoc2023.day05
 
-import scala.collection.immutable.NumericRange
-import scala.collection.parallel.CollectionConverters.IterableIsParallelizable
-
 class Seeds {
 
 }
@@ -14,9 +11,9 @@ object Seeds {
             parseMappings(lines.tail.tail))
   }
 
-  def parseSeeds(line: String): Seq[Long] = line.split(": +")(1).split(" ").map(_.toLong).toSeq
+  private def parseSeeds(line: String): Seq[Long] = line.split(": +")(1).split(" ").map(_.toLong).toSeq
 
-  def parseMappings(lines: Seq[String]): Option[Mappings] = {
+  private def parseMappings(lines: Seq[String]): Option[Mappings] = {
     if (lines.isEmpty)
       None
     else {
@@ -28,60 +25,64 @@ object Seeds {
       Some(Mappings(mappingsName, mappings, parseMappings(lines.drop(mappingsLines.size + 1))))
     }
   }
+
 }
 
 case class Almanac(seeds: Seq[Long], mappings: Option[Mappings]) {
 
-  def minTransformedSeedValue(): Long = {
-    val value1 = rangedSeeds().par.
-      map(seedRange => {
-        println("Starting range " + seedRange)
-        val mappedSeedRange = seedRange.map((seed: Long) => {
-          if (seed % 10000000 == 0)
-            println(seedRange + " " + (seed - seedRange.start).toFloat / seedRange.size)
-          mappings.get.transform(seed)
-        }).min
-        println("Finished " + seedRange)
-        mappedSeedRange
-      })
-    println(value1)
-    value1.min
+  private val seedRanges = seedsToAlmanacRanges(seeds)
+
+  // Part 1
+  def lowestLocationNumberFromInitialSeeds(): Long = {
+    LazyList.from(1).
+      map(_.toLong).
+      find((locationNum: Long) => {
+        val seed = seedFor(locationNum)
+        seeds.contains(seed)
+      }).get
   }
 
-  def transformedSeedRanges(): Seq[Long] = rangedSeeds().flatMap(range => range.par.map((seed: Long) => mappings.get.transform(seed)))
-
-  def transformedSeeds(): Seq[Long] = seeds.map((seed: Long) => mappings.get.transform(seed))
-
-  def rangedSeeds(): Seq[NumericRange.Exclusive[Long]] = {
-    val value = seedsToRanges(seeds)
-    println("Done generating seed ranges")
-    value
+  // Part 2
+  def lowestLocationNumberFromInitialSeedRanges(): Long = {
+    LazyList.from(1).
+      find((locationNum: Int) => {
+        val seed = seedFor(locationNum)
+        seedRanges.exists(r => r.contains(seed))
+      }).get
   }
 
-  def seedsToRanges(seeds: Seq[Long]): Seq[NumericRange.Exclusive[Long]] = {
+  private def seedFor(num: Long) = mappings.get.recursivelyReverseMap(num)
+
+  private def seedsToAlmanacRanges(seeds: Seq[Long]): Seq[AlmanacRange] = {
     if (seeds.isEmpty)
       Seq()
     else {
       val start = seeds.head
       val length = seeds.tail.head
-      Seq((start to (start + length)).exclusive) ++ seedsToRanges(seeds.tail.tail)
+      Seq(AlmanacRange(start, length)) ++ seedsToAlmanacRanges(seeds.tail.tail)
     }
   }
+
+}
+
+case class AlmanacRange(start: Long, length: Long) {
+  def contains(num: Long): Boolean = start <= num && num <= start + length - 1
 }
 
 case class Mappings(name: String = "",
                     mappings: Seq[Mapping] = Seq(),
                     nextMappings: Option[Mappings] = None) {
 
-  def transform(num: Long): Long = nextMappings match {
-    case None               => correspondingNumber(num)
-    case Some(nextMappings) => nextMappings.transform(correspondingNumber(num))
-  }
+  def recursivelyReverseMap(num: Long): Long =
+    nextMappings match {
+      case Some(nextMappings) => reverseMapNum(nextMappings.recursivelyReverseMap(num))
+      case None => reverseMapNum(num)
+    }
 
-  def correspondingNumber(num: Long): Long =
+  def reverseMapNum(num: Long): Long =
     mappings.
-      find(_.isInRange(num)).
-      map(_.correspondingNumber(num)).
+      find(_.inDestinationRange(num)).
+      map(_.destToSource(num)).
       getOrElse(num)
 
 }
@@ -90,10 +91,10 @@ case class Mapping(destinationRangeStart: Long,
                    sourceRangeStart: Long,
                    rangeLength: Long) {
 
-  private val range = (sourceRangeStart to sourceRangeStart + rangeLength).exclusive
+  private val destinationRange = AlmanacRange(destinationRangeStart, rangeLength)
 
-  def isInRange(num: Long): Boolean = range.contains(num)
+  def inDestinationRange(num: Long): Boolean = destinationRange.contains(num)
 
-  def correspondingNumber(sourceNumber: Long): Long = destinationRangeStart + (sourceNumber - sourceRangeStart)
+  def destToSource(num: Long): Long = (num - destinationRangeStart) + sourceRangeStart
 
 }
