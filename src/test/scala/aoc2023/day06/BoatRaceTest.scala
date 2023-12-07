@@ -20,4 +20,13 @@ class BoatRaceTest extends AnyFlatSpec {
     assert(BoatRace(duration = 15, record = 40).winningButtonPresses() === 8)
     assert(BoatRace(duration = 30, record = 200).winningButtonPresses() === 9)
   }
+
+  "Part 1" should "should give the correct answer" in {
+    println(
+    BoatRace(duration = 59, record = 543).winningButtonPresses() *
+    BoatRace(duration = 68, record = 1020).winningButtonPresses() *
+    BoatRace(duration = 82, record = 1664).winningButtonPresses() *
+    BoatRace(duration = 74, record = 1022).winningButtonPresses())
+  }
+
 }
