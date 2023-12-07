@@ -11,5 +11,7 @@ class CamelCardsTest extends AnyFlatSpec {
     assert(Hand("23332").handType() === FullHouse)
     assert(Hand("TTT98").handType() === ThreeOfAKind)
     assert(Hand("23432").handType() === TwoPair)
+    assert(Hand("A23A4").handType() === OnePair)
+    assert(Hand("23456").handType() === HighCard)
   }
 }
