@@ -15,4 +15,9 @@ class BoatRaceTest extends AnyFlatSpec {
     assert(Boat(7).distance(7) === 0)
   }
 
+  "A BoatRace" should "should give the number of ways the record can be broken" in {
+    assert(BoatRace(duration = 7, record = 9).winningButtonPresses() === 4)
+    assert(BoatRace(duration = 15, record = 40).winningButtonPresses() === 8)
+    assert(BoatRace(duration = 30, record = 200).winningButtonPresses() === 9)
+  }
 }

@@ -1,6 +1,7 @@
 package aoc2023.day06
 
-class BoatRace {
+case class BoatRace(duration: Int, record: Int) {
+  def winningButtonPresses(): Int = (0 until duration).map(buttonHeld => Boat(duration).distance(buttonHeld)).filter(distance => distance > record).size
 
 }
 
