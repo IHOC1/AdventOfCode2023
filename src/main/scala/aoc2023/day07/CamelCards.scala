@@ -11,7 +11,7 @@ object CamelCards {
   def totalWinnings(fileName: String): Int = {
     import scala.io.Source
 
-    val source = Source.fromFile("src/test/resources/Day07CamelCardsTestData.txt")
+    val source = Source.fromFile("src/test/resources/" + fileName)
     val handsToBids = source.getLines().map(line => parseLine(line)).toMap
     source.close()
 
