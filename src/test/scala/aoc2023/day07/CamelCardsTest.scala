@@ -1,5 +1,6 @@
 package aoc2023.day07
 
+import aoc2023.day07.CamelCards.totalWinnings
 import aoc2023.day07.HandType._
 import org.scalatest.flatspec.AnyFlatSpec
 
@@ -14,4 +15,9 @@ class CamelCardsTest extends AnyFlatSpec {
     assert(Hand("A23A4").handType() === OnePair)
     assert(Hand("23456").handType() === HighCard)
   }
+
+  "Total winnings for test data" should "be correct" in {
+    assert(totalWinnings("Day07CamelCardsTestData.txt") === 6440)
+  }
+
 }

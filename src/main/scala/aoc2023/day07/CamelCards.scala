@@ -6,6 +6,13 @@ class CamelCards {
 
 }
 
+object CamelCards {
+
+  def totalWinnings(fileName: String): Int = {
+    0
+  }
+}
+
 object HandType extends Enumeration {
   type HandType = Value
   val FiveOfAKind, FourOfAKind, FullHouse, ThreeOfAKind, TwoPair, OnePair, HighCard = Value
