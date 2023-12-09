@@ -5,6 +5,28 @@ import scala.annotation.tailrec
 case class HauntedWasteland(leftRightInstructions: Array[Char],
                             network: Map[String, (String, String)]) {
 
+  def numberOfStepsToAllEndingInZ(): Int = {
+    val startingPoints = everyNodeThatEndsWithA()
+    numberOfStepsToAllEndingInZ(startingPoints, 0, 0)
+  }
+
+  def numberOfStepsToAllEndingInZ(nodes: List[String], leftRightIndex: Int, noSteps: Int): Int = {
+    if (nodes.forall(_.endsWith("Z")))
+      noSteps
+    else {
+      val nextNodes = nodes.map(node => {
+        leftRightInstructions(leftRightIndex) match {
+          case 'L' => network(node)._1
+          case 'R' => network(node)._2
+        }
+      })
+      val nextIndex = (leftRightIndex + 1) % leftRightInstructions.length
+      numberOfStepsToAllEndingInZ(nextNodes, nextIndex, noSteps + 1)
+    }
+  }
+
+  def everyNodeThatEndsWithA() = network.keys.filter(node => node.endsWith("A")).toList
+
   @tailrec
   final def numberOfStepsToZZZ(node: String, leftRightIndex: Int, noSteps: Int): Int = {
     if (node == "ZZZ")
