@@ -1,19 +1,21 @@
 package aoc2023.day08
 
+import scala.annotation.tailrec
+
 case class HauntedWasteland(leftRightInstructions: Array[Char],
                             network: Map[String, (String, String)]) {
 
-  def numberOfStepsToZZZ(node: String, leftRightIndex: Int): Int = {
-    println(node)
+  @tailrec
+  final def numberOfStepsToZZZ(node: String, leftRightIndex: Int, noSteps: Int): Int = {
     if (node == "ZZZ")
-      0
+      noSteps
     else {
-      println(network)
-      val next = leftRightInstructions(leftRightIndex) match {
+      val nextNode = leftRightInstructions(leftRightIndex) match {
         case 'L' => network(node)._1
         case 'R' => network(node)._2
       }
-      1 + numberOfStepsToZZZ(next, (leftRightIndex + 1) % leftRightInstructions.length)
+      val nextIndex = (leftRightIndex + 1) % leftRightInstructions.length
+      numberOfStepsToZZZ(nextNode, nextIndex, noSteps + 1)
     }
   }
 
