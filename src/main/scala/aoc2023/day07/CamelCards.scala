@@ -153,7 +153,7 @@ case class Hand(cards: String) extends Comparable[Hand] {
   }
 
   def compareCardsJackWeakest(cards: (Char, Char)): Int = {
-    cardToStrength(cards._1).compare(cardToStrengthJackWeakest(cards._2))
+    cardToStrengthJackWeakest(cards._1).compare(cardToStrengthJackWeakest(cards._2))
   }
 
 }
