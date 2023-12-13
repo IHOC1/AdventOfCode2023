@@ -33,4 +33,8 @@ class OasisAnalysisTest extends AnyFlatSpec {
     assert(sumOfExtrapolatedBackwardsSensorValues("Day09TestOasisSensorValues.txt") === 2L)
   }
 
+  "Sum of backwards-extrapolated values for the real data" should "should be correct" in {
+    assert(sumOfExtrapolatedBackwardsSensorValues("Day09OasisSensorValues.txt") === 923L)
+  }
+
 }
