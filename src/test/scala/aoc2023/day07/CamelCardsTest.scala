@@ -88,7 +88,7 @@ class CamelCardsTest extends AnyFlatSpec {
   "Part 2 total winnings for test data" should "be correct" in {
     assert(totalWinningsWithJackWild("Day07CamelCardsTestData.txt") === 5905)
   }
-^
+
   "Part 2 total winnings for the real data" should "be correct" in {
     assert(totalWinningsWithJackWild("Day07CamelCards.txt") === 250577259)
   }
