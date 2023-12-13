@@ -8,6 +8,23 @@ class OasisAnalysis {
 
 object OasisAnalysis {
 
+  def sumOfExtrapolatedSensorValues(filename: String) = {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/" + filename)
+    val lines = source.getLines().toList
+    source.close()
+
+    lines.
+      map(line => lineToValues(line)).
+      map(values => extrapolate(values)).
+      sum
+  }
+
+  private def lineToValues(line: String) = {
+    line.split(" ").map(_.toLong).toList
+  }
+
   @tailrec
   private def differences(values: List[Long], diffs: List[Long]): List[Long] =
     if (values.length < 2)

@@ -1,6 +1,6 @@
 package aoc2023.day09
 
-import aoc2023.day09.OasisAnalysis.extrapolate
+import aoc2023.day09.OasisAnalysis.{extrapolate, sumOfExtrapolatedSensorValues}
 import org.scalatest.flatspec.AnyFlatSpec
 
 class OasisAnalysisTest extends AnyFlatSpec {
@@ -15,5 +15,9 @@ class OasisAnalysisTest extends AnyFlatSpec {
 
   "Extrapolation" should "work for the third simplest test input" in {
     assert(extrapolate(List(10, 13, 16, 21, 30, 45)) === 68L)
+  }
+
+  "Sum of extrapolated values for the test data" should "should be correct" in {
+    assert(sumOfExtrapolatedSensorValues("Day09TestOasisSensorValues.txt") === 114L)
   }
 }
