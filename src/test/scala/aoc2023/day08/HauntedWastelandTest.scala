@@ -18,8 +18,12 @@ class HauntedWastelandTest extends AnyFlatSpec {
 
   // Part 2
 
-  "Test map" should "reach ZZZ in 6 steps" in {
+  "Test map" should "reach all ending in Z in 6 steps" in {
     assert(HauntedWasteland.parse("Day08HauntedWastelandPart2TestData1.txt").numberOfStepsToAllEndingInZ() === 6)
+  }
+
+  "Part 2 full map" should "reach all ending in Z in 20093 steps" in {
+    assert(HauntedWasteland.parse("Day08HauntedWastelandData.txt").calculateNumberOfStepsToAllEndingInZ() === Some(22103062509257L))
   }
 
 }
