@@ -1,6 +1,8 @@
 package aoc2023.day09
 
+import scala.Predef
 import scala.annotation.tailrec
+import scala.io.Source
 
 class OasisAnalysis {
 
@@ -9,16 +11,26 @@ class OasisAnalysis {
 object OasisAnalysis {
 
   def sumOfExtrapolatedSensorValues(filename: String) = {
+    extractLines(filename).
+      map(line => lineToValues(line)).
+      map(values => extrapolate(values)).
+      sum
+  }
+
+  def sumOfExtrapolatedBackwardsSensorValues(filename: String) = {
+    extractLines(filename).
+      map(line => lineToValues(line)).
+      map(values => extrapolateBackwards(values)).
+      sum
+  }
+
+  private def extractLines(filename: String) = {
     import scala.io.Source
 
     val source = Source.fromFile("src/test/resources/" + filename)
     val lines = source.getLines().toList
     source.close()
-
-    lines.
-      map(line => lineToValues(line)).
-      map(values => extrapolate(values)).
-      sum
+    lines
   }
 
   private def lineToValues(line: String) = {
@@ -37,6 +49,14 @@ object OasisAnalysis {
       values.last
     else {
       values.last + extrapolate(differences(values, List()))
+    }
+  }
+
+  def extrapolateBackwards(values: List[Long]): Long = {
+    if (values.forall(_ == 0L))
+      values.head
+    else {
+      values.head - extrapolateBackwards(differences(values, List()))
     }
   }
 
