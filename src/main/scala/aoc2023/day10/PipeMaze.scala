@@ -41,6 +41,10 @@ case class Coordinate(x: Int, y: Int) {
   def getPipe(pipesGrid: Array[Array[Pipe]]) = pipesGrid(y)(x)
 
   def move(direction: Direction): Coordinate = direction.move(this)
+
+  def isInGrid(pipesGrid: Array[Array[Pipe]]) =
+    (0 <= x && x < pipesGrid(0).length) &&
+    (0 <= y && y < pipesGrid.length)
 }
 
 case class Pipe(directions: List[Direction]) {
@@ -49,7 +53,14 @@ case class Pipe(directions: List[Direction]) {
 
   def findDirectionsFromNeighbours(coord: Coordinate, pipesGrid: Array[Array[Pipe]]) =
     Direction.allDirections.
-      filter((d: Direction) => coord.move(d).getPipe(pipesGrid).facesDirection(d.opposite()))
+      filter((d: Direction) => {
+        val neighbourCoord = coord.move(d)
+
+        if (!neighbourCoord.isInGrid(pipesGrid))
+          false
+        else
+          neighbourCoord.getPipe(pipesGrid).facesDirection(d.opposite())
+      })
 
   def facesDirection(direction: Direction): Boolean = directions.contains(direction)
 
@@ -65,7 +76,7 @@ object PipeMaze {
     val width = listsOfPipes.head.length
     val height = listsOfPipes.length
 
-    val pipesGrid: Array[Array[Pipe]] = Array.tabulate[Pipe](width, height) { (x, y) => listsOfPipes(x)(y) }
+    val pipesGrid: Array[Array[Pipe]] = Array.tabulate[Pipe](height, width) { (x, y) => listsOfPipes(x)(y) }
 
     val startCoord = startCoords(pipesGrid)
     val startPipe = startCoord.getPipe(pipesGrid)

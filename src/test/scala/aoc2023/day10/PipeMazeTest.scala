@@ -12,4 +12,8 @@ class PipeMazeTest extends AnyFlatSpec {
   "Test pipe maze 2" should "give furthest point of 4" in {
     assert(furthestPoint("Day10TestPipeMaze2.txt") === 4L)
   }
+
+  "Test pipe maze 3" should "give furthest point of 8" in {
+    assert(furthestPoint("Day10TestPipeMaze3.txt") === 8L)
+  }
 }
