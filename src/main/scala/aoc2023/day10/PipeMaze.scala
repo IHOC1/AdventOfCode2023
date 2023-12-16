@@ -2,6 +2,8 @@ package aoc2023.day10
 
 import aoc2023.day10.Direction.{East, North, South, West}
 
+import scala.annotation.tailrec
+
 class PipeMaze {
 
 }
@@ -97,6 +99,7 @@ object PipeMaze {
     case "S" => Pipe(List(North, South, East, West))
   }.toList
 
+  @tailrec
   private def loop(currentCoord: Coordinate, movingInDirection: Direction, pipesGrid: Array[Array[Pipe]], loopCoords: Seq[Coordinate]): Seq[Coordinate] = {
     val nextCoordinate = currentCoord.move(movingInDirection)
     val nextPipe = nextCoordinate.getPipe(pipesGrid)
