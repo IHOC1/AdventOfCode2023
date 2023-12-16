@@ -83,7 +83,7 @@ object PipeMaze {
     val startExitDirections = startPipe.findDirectionsFromNeighbours(startCoord, pipesGrid)
     val startDirection = startExitDirections.head
 
-    loopLength(startCoord, startDirection, pipesGrid, 0) / 2L
+    (loop(startCoord, startDirection, pipesGrid, List()).length + 1) / 2L
   }
 
   def parseLine(line: String): List[Pipe] = line.split("").map {
@@ -97,15 +97,15 @@ object PipeMaze {
     case "S" => Pipe(List(North, South, East, West))
   }.toList
 
-  private def loopLength(currentCoord: Coordinate, movingInDirection: Direction, pipesGrid: Array[Array[Pipe]], distance: Long): Long = {
+  private def loop(currentCoord: Coordinate, movingInDirection: Direction, pipesGrid: Array[Array[Pipe]], loopCoords: Seq[Coordinate]): Seq[Coordinate] = {
     val nextCoordinate = currentCoord.move(movingInDirection)
     val nextPipe = nextCoordinate.getPipe(pipesGrid)
     if (nextPipe.isStart()) {
-      distance + 1
+      loopCoords
     }
     else {
       val nextPipeOnwardDirection = nextPipe.exitDirection(movingInDirection.opposite())
-      loopLength(nextCoordinate, nextPipeOnwardDirection, pipesGrid, distance + 1)
+      loop(nextCoordinate, nextPipeOnwardDirection, pipesGrid, loopCoords :+ nextCoordinate)
     }
   }
 
