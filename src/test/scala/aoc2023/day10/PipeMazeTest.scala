@@ -1,6 +1,6 @@
 package aoc2023.day10
 
-import aoc2023.day10.PipeMaze.furthestPoint
+import aoc2023.day10.PipeMaze.{furthestPoint, numInternalTiles}
 import org.scalatest.flatspec.AnyFlatSpec
 
 class PipeMazeTest extends AnyFlatSpec {
@@ -19,5 +19,11 @@ class PipeMazeTest extends AnyFlatSpec {
 
   "Pipe maze" should "give furthest point of 7173" in {
     assert(furthestPoint("Day10PipeMaze.txt") === 7173L)
+  }
+
+  // Part 2
+
+  "Pipe maze 1" should "give num internal tiles as 4" in {
+    assert(numInternalTiles("Day10TestPipeMaze1Part2.txt") === 4L)
   }
 }

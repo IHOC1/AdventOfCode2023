@@ -77,6 +77,12 @@ object PipeMaze {
     (loopFromStart(pipesGrid).length + 1) / 2L
   }
 
+
+  def numInternalTiles(filename: String): Long = {
+    val pipesGrid = parseGrid(filename)
+    3
+  }
+
   private def loopFromStart(pipesGrid: Array[Array[Pipe]]) = {
     val startCoord = startCoords(pipesGrid)
     val startPipe = startCoord.getPipe(pipesGrid)
