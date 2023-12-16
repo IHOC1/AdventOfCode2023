@@ -72,6 +72,21 @@ case class Pipe(directions: List[Direction]) {
 object PipeMaze {
 
   def furthestPoint(filename: String): Long = {
+    val pipesGrid = parseGrid(filename)
+
+    (loopFromStart(pipesGrid).length + 1) / 2L
+  }
+
+  private def loopFromStart(pipesGrid: Array[Array[Pipe]]) = {
+    val startCoord = startCoords(pipesGrid)
+    val startPipe = startCoord.getPipe(pipesGrid)
+    val startExitDirections = startPipe.findDirectionsFromNeighbours(startCoord, pipesGrid)
+    val startDirection = startExitDirections.head
+
+    loop(startCoord, startDirection, pipesGrid, List())
+  }
+
+  private def parseGrid(filename: String): Array[Array[Pipe]] = {
     val lines = extractLines(filename)
 
     val listsOfPipes = lines.map(line => parseLine(line))
@@ -79,13 +94,7 @@ object PipeMaze {
     val height = listsOfPipes.length
 
     val pipesGrid: Array[Array[Pipe]] = Array.tabulate[Pipe](height, width) { (x, y) => listsOfPipes(x)(y) }
-
-    val startCoord = startCoords(pipesGrid)
-    val startPipe = startCoord.getPipe(pipesGrid)
-    val startExitDirections = startPipe.findDirectionsFromNeighbours(startCoord, pipesGrid)
-    val startDirection = startExitDirections.head
-
-    (loop(startCoord, startDirection, pipesGrid, List()).length + 1) / 2L
+    pipesGrid
   }
 
   def parseLine(line: String): List[Pipe] = line.split("").map {
