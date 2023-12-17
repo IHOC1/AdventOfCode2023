@@ -47,6 +47,14 @@ case class Coordinate(x: Int, y: Int) {
   def isInGrid(pipesGrid: Array[Array[Pipe]]) =
     (0 <= x && x < pipesGrid(0).length) &&
     (0 <= y && y < pipesGrid.length)
+
+  def isInside(loop: Set[Coordinate], pipesGrid: Array[Array[Pipe]]): Boolean = {
+    (0 to y).count(y1 => {
+      val checkCoord = Coordinate(x, y1)
+      loop.contains(checkCoord) && checkCoord.getPipe(pipesGrid).isEastWest
+    }) % 2 ==1
+  }
+
 }
 
 case class Pipe(directions: List[Direction]) {
@@ -67,6 +75,10 @@ case class Pipe(directions: List[Direction]) {
   def facesDirection(direction: Direction): Boolean = directions.contains(direction)
 
   def exitDirection(entryDirection: Direction): Direction = directions.filter(d => d != entryDirection).head
+
+  private val eastWest: Set[Direction] = Set(East, West)
+
+  def isEastWest: Boolean = directions.exists(d => eastWest.contains(d))
 }
 
 object PipeMaze {
@@ -74,13 +86,24 @@ object PipeMaze {
   def furthestPoint(filename: String): Long = {
     val pipesGrid = parseGrid(filename)
 
-    (loopFromStart(pipesGrid).length + 1) / 2L
+    loopFromStart(pipesGrid).length / 2L
   }
 
 
   def numInternalTiles(filename: String): Long = {
     val pipesGrid = parseGrid(filename)
-    3
+    val loop = loopFromStart(pipesGrid).toSet
+
+    val coords: Set[Coordinate] = allCoords(pipesGrid)
+    val nonLoopCoords = coords.diff(loop)
+
+    nonLoopCoords.count(coord => coord.isInside(loop, pipesGrid))
+  }
+
+  private def allCoords(pipesGrid: Array[Array[Pipe]]) = {
+    pipesGrid.indices.
+      flatMap(y => pipesGrid.head.indices.
+        map(x => Coordinate(x, y))).toSet
   }
 
   private def loopFromStart(pipesGrid: Array[Array[Pipe]]) = {
@@ -89,7 +112,7 @@ object PipeMaze {
     val startExitDirections = startPipe.findDirectionsFromNeighbours(startCoord, pipesGrid)
     val startDirection = startExitDirections.head
 
-    loop(startCoord, startDirection, pipesGrid, List())
+    loop(startCoord, startDirection, pipesGrid, List(startCoord))
   }
 
   private def parseGrid(filename: String): Array[Array[Pipe]] = {
@@ -99,8 +122,7 @@ object PipeMaze {
     val width = listsOfPipes.head.length
     val height = listsOfPipes.length
 
-    val pipesGrid: Array[Array[Pipe]] = Array.tabulate[Pipe](height, width) { (x, y) => listsOfPipes(x)(y) }
-    pipesGrid
+    Array.tabulate[Pipe](height, width) { (x, y) => listsOfPipes(x)(y) }
   }
 
   def parseLine(line: String): List[Pipe] = line.split("").map {
