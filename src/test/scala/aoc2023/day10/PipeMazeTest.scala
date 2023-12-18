@@ -30,4 +30,8 @@ class PipeMazeTest extends AnyFlatSpec {
   "Pipe maze 2" should "give num internal tiles as 8" in {
     assert(numInternalTiles("Day10TestPipeMaze2Part2.txt") === 8L)
   }
+
+  "Pipe maze" should "give num internal tiles as ???" in {
+    assert(numInternalTiles("Day10PipeMaze.txt") === 291L)
+  }
 }

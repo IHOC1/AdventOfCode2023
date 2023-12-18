@@ -121,16 +121,20 @@ object PipeMaze {
     val pipesGrid = parseGrid(filename)
     val loop = loopFromStart(pipesGrid).toSet
 
-    val startCoord: Coordinate = startCoords(pipesGrid)
-    val startPipe = startCoord.getPipe(pipesGrid)
-    val startExitDirections = startPipe.findDirectionsFromNeighbours(startCoord, pipesGrid)
-    val replacementStartPipe = Pipe(startExitDirections.toSet)
-    pipesGrid(startCoord.y)(startCoord.x) = replacementStartPipe
+    replaceStartPipeWithCorrectPipe(pipesGrid)
 
     val coords: Set[Coordinate] = allCoords(pipesGrid)
     val nonLoopCoords = coords.diff(loop)
 
     nonLoopCoords.count(coord => coord.isInside(loop, pipesGrid))
+  }
+
+  private def replaceStartPipeWithCorrectPipe(pipesGrid: Array[Array[Pipe]]): Unit = {
+    val startCoord: Coordinate = startCoords(pipesGrid)
+    val startPipe = startCoord.getPipe(pipesGrid)
+    val startExitDirections = startPipe.findDirectionsFromNeighbours(startCoord, pipesGrid)
+    val replacementStartPipe = Pipe(startExitDirections.toSet)
+    pipesGrid(startCoord.y)(startCoord.x) = replacementStartPipe
   }
 
   private def allCoords(pipesGrid: Array[Array[Pipe]]) = {
