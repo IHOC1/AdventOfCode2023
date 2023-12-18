@@ -49,17 +49,34 @@ case class Coordinate(x: Int, y: Int) {
     (0 <= y && y < pipesGrid.length)
 
   def isInside(loop: Set[Coordinate], pipesGrid: Array[Array[Pipe]]): Boolean = {
-    (0 to y).count(y1 => {
-      val checkCoord = Coordinate(x, y1)
-      loop.contains(checkCoord) && checkCoord.getPipe(pipesGrid).isEastWest
-    }) % 2 ==1
+    val loopTilesToNorthEdgeOfGrid: Seq[Pipe] = (0 to y).reverse.
+      map(Coordinate(x, _)).
+      filter(coord => loop.contains(coord)).
+      map(_.getPipe(pipesGrid))
+
+    compressToEastWestLines(loopTilesToNorthEdgeOfGrid, Seq()).size % 2 == 1
+  }
+
+  @tailrec
+  final def compressToEastWestLines(tiles: Seq[Pipe], compressedTiles: Seq[Pipe]): Seq[Pipe] = {
+    if (tiles.isEmpty)
+      compressedTiles
+    else if (tiles.head.isEastWest)
+      compressToEastWestLines(tiles.tail, compressedTiles :+ tiles.head)
+    else if ((tiles.head.isNorthEast || tiles.head.isNorthWest) && tiles.tail.head.isNorthSouth)
+      compressToEastWestLines(tiles.head +: tiles.tail.tail, compressedTiles)
+    else if ((tiles.head.isNorthEast && tiles.tail.head.isSouthWest) ||
+             (tiles.head.isNorthWest && tiles.tail.head.isSouthEast))
+      compressToEastWestLines(tiles.tail.tail, compressedTiles :+ Pipe(Set(East, West)))
+    else // Switchback
+      compressToEastWestLines(tiles.tail.tail, compressedTiles)
   }
 
 }
 
-case class Pipe(directions: List[Direction]) {
+case class Pipe(directions: Set[Direction]) {
 
-  def isStart(): Boolean = directions.length == 4
+  def isStart(): Boolean = directions.size == 4
 
   def findDirectionsFromNeighbours(coord: Coordinate, pipesGrid: Array[Array[Pipe]]) =
     Direction.allDirections.
@@ -76,9 +93,19 @@ case class Pipe(directions: List[Direction]) {
 
   def exitDirection(entryDirection: Direction): Direction = directions.filter(d => d != entryDirection).head
 
-  private val eastWest: Set[Direction] = Set(East, West)
+  val northSouth: Set[Direction] = Set(North, South)
+  val   eastWest: Set[Direction] = Set(East , West )
+  val  northEast: Set[Direction] = Set(North, East )
+  val  northWest: Set[Direction] = Set(North, West )
+  val  southEast: Set[Direction] = Set(South, East )
+  val  southWest: Set[Direction] = Set(South, West )
 
-  def isEastWest: Boolean = directions.exists(d => eastWest.contains(d))
+  val isNorthSouth: Boolean = directions == northSouth
+  val isEastWest  : Boolean = directions == eastWest
+  val isNorthEast : Boolean = directions == northEast
+  val isNorthWest : Boolean = directions == northWest
+  val isSouthEast : Boolean = directions == southEast
+  val isSouthWest : Boolean = directions == southWest
 }
 
 object PipeMaze {
@@ -93,6 +120,12 @@ object PipeMaze {
   def numInternalTiles(filename: String): Long = {
     val pipesGrid = parseGrid(filename)
     val loop = loopFromStart(pipesGrid).toSet
+
+    val startCoord: Coordinate = startCoords(pipesGrid)
+    val startPipe = startCoord.getPipe(pipesGrid)
+    val startExitDirections = startPipe.findDirectionsFromNeighbours(startCoord, pipesGrid)
+    val replacementStartPipe = Pipe(startExitDirections.toSet)
+    pipesGrid(startCoord.y)(startCoord.x) = replacementStartPipe
 
     val coords: Set[Coordinate] = allCoords(pipesGrid)
     val nonLoopCoords = coords.diff(loop)
@@ -126,14 +159,14 @@ object PipeMaze {
   }
 
   def parseLine(line: String): List[Pipe] = line.split("").map {
-    case "|" => Pipe(List(North, South))
-    case "-" => Pipe(List(East, West))
-    case "L" => Pipe(List(North, East))
-    case "J" => Pipe(List(North, West))
-    case "7" => Pipe(List(West, South))
-    case "F" => Pipe(List(East, South))
-    case "." => Pipe(List())
-    case "S" => Pipe(List(North, South, East, West))
+    case "|" => Pipe(Set(North, South))
+    case "-" => Pipe(Set(East, West))
+    case "L" => Pipe(Set(North, East))
+    case "J" => Pipe(Set(North, West))
+    case "7" => Pipe(Set(West, South))
+    case "F" => Pipe(Set(East, South))
+    case "." => Pipe(Set())
+    case "S" => Pipe(Set(North, South, East, West))
   }.toList
 
   @tailrec
