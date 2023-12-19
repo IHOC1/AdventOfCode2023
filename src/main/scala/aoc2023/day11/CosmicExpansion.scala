@@ -52,7 +52,6 @@ object CosmicExpansion {
       val y    = lineAndYIndex._2
       line.zipWithIndex.filter(p => p._1 == '#').map(p => Galaxy(p._2, y))
     })
-    println(galaxies)
     CosmicExpansion(galaxies)
   }
 
