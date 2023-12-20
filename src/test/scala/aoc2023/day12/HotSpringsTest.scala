@@ -29,13 +29,17 @@ class HotSpringsTest extends AnyFlatSpec {
      We could start at the beginning and prune when the groups don't match.
      There is also the possibility to try to use any anchoring groups to limit the search space? This seems harder to detect.
      */
-  "Condition records" should "have only one arrangement if no conditions are unknown" in {
+  "Condition records with no unknown conditions" should "have only one arrangement" in {
     assert(differentArrangements("#.#.###"            , Seq(1,1,3)  ) === Seq("#.#.###")            )
     assert(differentArrangements(".#...#....###."     , Seq(1,1,3)  ) === Seq(".#...#....###.")     )
     assert(differentArrangements(".#.###.#.######"    , Seq(1,3,1,6)) === Seq(".#.###.#.######")    )
     assert(differentArrangements("####.#...#..."      , Seq(4,1,1)  ) === Seq("####.#...#...")      )
     assert(differentArrangements("#....######..#####.", Seq(1,6,5)  ) === Seq("#....######..#####."))
     assert(differentArrangements(".###.##....#"       , Seq(3,2,1)  ) === Seq(".###.##....#")       )
+  }
+
+  "Condition records with some unknown conditions" should "have varying numbers of arrangements" in {
+    assert(differentArrangements("???.###", Seq(1,1,3)) === Seq("#.#.###"))
   }
 
 }
