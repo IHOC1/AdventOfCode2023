@@ -39,7 +39,8 @@ object HotSprings {
       possibleConditionRecords
     else {
       val nextGeneration = generateForNextUnknown(possibleConditionRecords.head).
-        filter((conditionRecord: String) => completeGroupsMatch(conditionRecord, expectedGroups))
+        filter((conditionRecord: String) => 
+          completeGroupsMatch(conditionRecord, expectedGroups) && sufficientRoomForRemainingGroups(conditionRecord, expectedGroups))
       arrangements(expectedGroups, possibleConditionRecords.tail ++ nextGeneration)
     }
   }
@@ -56,11 +57,37 @@ object HotSprings {
     previouslyBuiltGroupsAreOfTheCorrectSize && currentGroupBeingBuiltIsWithinSize
   }
 
-  def completeGroups(conditionRecord: String): Seq[Int] =
-    conditionRecord.split("\\?")(0).split("\\.+").filter(_.nonEmpty).map(_.length)
+  def completeGroups(conditionRecord: String): Seq[Int] = {
+    groupsIn(conditionRecord.split("\\?")(0))
+  }
+
+  private def groupsIn(conditionRecord: String) = {
+    conditionRecord.split("\\.+").filter(_.nonEmpty).map(_.length).toList
+  }
 
   private def generateForNextUnknown(conditionRecord: String): Seq[String] =
     Seq(".", "#").map((replacement: String) => conditionRecord.replaceFirst("\\?", replacement))
+
+  def sufficientRoomForRemainingGroups(conditionRecord: String, expectedGroups: Seq[Int]): Boolean = {
+      val indexOfFirstUnknown = conditionRecord.indexOf("?")
+
+      if (indexOfFirstUnknown <= 0 || !startOfDamagedBlock(conditionRecord, indexOfFirstUnknown))
+        true
+      else {
+        val remainingConditionRecord = conditionRecord.substring(indexOfFirstUnknown, conditionRecord.length)
+        val maxPossibleNumDamagedSprings = groupsIn(remainingConditionRecord).sum
+//        println(f"RCR: $remainingConditionRecord, Max: $maxPossibleNumDamagedSprings")
+
+        val groups = groupsIn(conditionRecord.substring(0, indexOfFirstUnknown))
+        val totalExpectedRemainingGroups = expectedGroups.drop(groups.length).sum
+//        println(f"Groups: $groups, Total: $totalExpectedRemainingGroups")
+
+        maxPossibleNumDamagedSprings >= totalExpectedRemainingGroups
+      }
+    }
+
+  private def startOfDamagedBlock(conditionRecord: String, indexOfFirstUnknown: Int): Boolean =
+    conditionRecord.charAt(indexOfFirstUnknown - 1) == '.'
 
   private def knownGroups(conditionRecord: String): Seq[Int] = {
     conditionRecord.split("\\.+").toList.filter(_.nonEmpty).map(_.length)
