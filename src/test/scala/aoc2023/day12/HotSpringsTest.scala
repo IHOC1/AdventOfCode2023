@@ -52,4 +52,8 @@ class HotSpringsTest extends AnyFlatSpec {
     assert(sumOfArrangements("Day12HotSpringsTest1.txt") === 21)
   }
 
+  "Sum of different arrangements" should "be 7490 for the data" in {
+    assert(sumOfArrangements("Day12HotSprings.txt") === 7490)
+  }
+
 }
