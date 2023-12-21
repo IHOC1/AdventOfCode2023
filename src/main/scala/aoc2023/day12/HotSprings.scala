@@ -38,9 +38,20 @@ object HotSprings {
     if (!possibleConditionRecords.head.contains("?"))
       possibleConditionRecords
     else {
-      val nextGeneration = generateForNextUnknown(possibleConditionRecords.head)
+      val nextGeneration = generateForNextUnknown(possibleConditionRecords.head).
+        filter((conditionRecord: String) => completeGroupsMatch(conditionRecord, expectedGroups))
       arrangements(expectedGroups, possibleConditionRecords.tail ++ nextGeneration)
     }
+  }
+
+  def completeGroupsMatch(conditionRecord: String, expectedGroups: Seq[Int]): Boolean = {
+    val groups = completeGroups(conditionRecord)
+    val latestGroupIndex = groups.length - 1
+    groups.take(latestGroupIndex) == expectedGroups.take(latestGroupIndex)
+  }
+
+  def completeGroups(conditionRecord: String): Seq[Int] = {
+    conditionRecord.split("\\?")(0).split("\\.+").filter(_.nonEmpty).map(_.length)
   }
 
   private def generateForNextUnknown(conditionRecord: String): Seq[String] =
