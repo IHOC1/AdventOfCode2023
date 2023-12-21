@@ -7,8 +7,30 @@ class HotSprings {
 
 object HotSprings {
 
+  def sumOfArrangements(filename: String): Long = {
+    import scala.io.Source
+
+    val source = Source.fromFile("src/test/resources/" + filename)
+    val lines = source.getLines().toList
+    source.close()
+
+    lines.
+      map((line: String) => {
+        val parts = line.split(" ")
+        (parts(0), parseContiguousGroup(parts(1)))
+      }).
+      map((conditionRecordAndGroup: (String, Seq[Int])) =>
+        differentArrangements(conditionRecordAndGroup._1, conditionRecordAndGroup._2)).
+      map(_.length).
+      sum
+  }
+
+  private def parseContiguousGroup(group: String): Seq[Int] =
+    group.split(",").map(_.toInt)
+
   def differentArrangements(conditionRecords: String, damagedSpringContiguousGroups: Seq[Int]): Seq[String] = {
-    arrangements(damagedSpringContiguousGroups, Seq(conditionRecords)).filter(conditionRecord => knownGroups(conditionRecord) == damagedSpringContiguousGroups)
+    arrangements(damagedSpringContiguousGroups, Seq(conditionRecords)).
+      filter((conditionRecord: String) => knownGroups(conditionRecord) == damagedSpringContiguousGroups)
   }
 
   @tailrec
