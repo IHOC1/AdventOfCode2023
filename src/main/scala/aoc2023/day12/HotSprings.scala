@@ -47,12 +47,17 @@ object HotSprings {
   def completeGroupsMatch(conditionRecord: String, expectedGroups: Seq[Int]): Boolean = {
     val groups = completeGroups(conditionRecord)
     val latestGroupIndex = groups.length - 1
-    groups.take(latestGroupIndex) == expectedGroups.take(latestGroupIndex)
+
+    val previouslyBuiltGroupsAreOfTheCorrectSize = groups.take(latestGroupIndex) == expectedGroups.take(latestGroupIndex)
+
+    lazy val currentGroupBeingBuiltIsWithinSize = (latestGroupIndex < 0) ||
+      (groups.length <= expectedGroups.length && groups(latestGroupIndex) <= expectedGroups(latestGroupIndex))
+
+    previouslyBuiltGroupsAreOfTheCorrectSize && currentGroupBeingBuiltIsWithinSize
   }
 
-  def completeGroups(conditionRecord: String): Seq[Int] = {
+  def completeGroups(conditionRecord: String): Seq[Int] =
     conditionRecord.split("\\?")(0).split("\\.+").filter(_.nonEmpty).map(_.length)
-  }
 
   private def generateForNextUnknown(conditionRecord: String): Seq[String] =
     Seq(".", "#").map((replacement: String) => conditionRecord.replaceFirst("\\?", replacement))
