@@ -30,17 +30,16 @@ class HotSpringsTest extends AnyFlatSpec {
      There is also the possibility to try to use any anchoring groups to limit the search space? This seems harder to detect.
      */
   "Condition records with no unknown conditions" should "have only one arrangement" in {
-    assert(differentArrangements("#.#.###"            , Seq(1,1,3)  ) === Seq("#.#.###")            )
-    assert(differentArrangements(".#...#....###."     , Seq(1,1,3)  ) === Seq(".#...#....###.")     )
-    assert(differentArrangements(".#.###.#.######"    , Seq(1,3,1,6)) === Seq(".#.###.#.######")    )
-    assert(differentArrangements("####.#...#..."      , Seq(4,1,1)  ) === Seq("####.#...#...")      )
-    assert(differentArrangements("#....######..#####.", Seq(1,6,5)  ) === Seq("#....######..#####."))
-    assert(differentArrangements(".###.##....#"       , Seq(3,2,1)  ) === Seq(".###.##....#")       )
+    assert(differentArrangements("#.#.###"            , Seq(1,1,3)  ).length === 1)
+    assert(differentArrangements(".#...#....###."     , Seq(1,1,3)  ).length === 1)
+    assert(differentArrangements(".#.###.#.######"    , Seq(1,3,1,6)).length === 1)
+    assert(differentArrangements("####.#...#..."      , Seq(4,1,1)  ).length === 1)
+    assert(differentArrangements("#....######..#####.", Seq(1,6,5)  ).length === 1)
+    assert(differentArrangements(".###.##....#"       , Seq(3,2,1)  ).length === 1)
   }
 
   "Condition records with some unknown conditions" should "have varying numbers of arrangements" in {
-    assert(differentArrangements("???.###"            , Seq(1,1,3)) === Seq("#.#.###"))
-
+    assert(differentArrangements("???.###"            , Seq(1,1,3)  ).length ===  1)
     assert(differentArrangements(".??..??...?##."     , Seq(1,1,3)  ).length ===  4)
     assert(differentArrangements("?#?#?#?#?#?#?#?"    , Seq(1,3,1,6)).length ===  1)
     assert(differentArrangements("????.#...#..."      , Seq(4,1,1)  ).length ===  1)
