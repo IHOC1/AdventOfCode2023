@@ -1,6 +1,6 @@
 package aoc2023.day12
 
-import aoc2023.day12.HotSprings.{differentArrangements, sumOfArrangements}
+import aoc2023.day12.HotSprings.{differentArrangements, sumOfArrangements, sumOfExpandedArrangements}
 import org.scalatest.flatspec.AnyFlatSpec
 
 class HotSpringsTest extends AnyFlatSpec {
@@ -53,6 +53,12 @@ class HotSpringsTest extends AnyFlatSpec {
 
   "Sum of different arrangements" should "be 7490 for the data" in {
     assert(sumOfArrangements("Day12HotSprings.txt") === 7490)
+  }
+
+  // Part 2
+
+  "Sum of different arrangements for part 2" should "be 525152 for the test data" in {
+    assert(sumOfExpandedArrangements("Day12HotSpringsTest1.txt") === 525152)
   }
 
 }
