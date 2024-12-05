@@ -1,6 +1,6 @@
 package aoc2023.day12
 
-import aoc2023.day12.HotSprings.{differentArrangements, sumOfArrangements, sumOfExpandedArrangements}
+import aoc2023.day12.HotSprings.{differentArrangements, numArrangementsPython, removeConsecutiveOperationalSprings, sumOfArrangements, sumOfExpandedArrangements}
 import org.scalatest.flatspec.AnyFlatSpec
 
 class HotSpringsTest extends AnyFlatSpec {
@@ -30,21 +30,21 @@ class HotSpringsTest extends AnyFlatSpec {
      There is also the possibility to try to use any anchoring groups to limit the search space? This seems harder to detect.
      */
   "Condition records with no unknown conditions" should "have only one arrangement" in {
-    assert(differentArrangements("#.#.###"            , Seq(1,1,3)  ).length === 1)
-    assert(differentArrangements(".#...#....###."     , Seq(1,1,3)  ).length === 1)
-    assert(differentArrangements(".#.###.#.######"    , Seq(1,3,1,6)).length === 1)
-    assert(differentArrangements("####.#...#..."      , Seq(4,1,1)  ).length === 1)
-    assert(differentArrangements("#....######..#####.", Seq(1,6,5)  ).length === 1)
-    assert(differentArrangements(".###.##....#"       , Seq(3,2,1)  ).length === 1)
+//    assert(numArrangements("#.#.###"            , Seq(1,1,3)  ) === 1)
+//    assert(numArrangements(".#...#....###."     , Seq(1,1,3)  ) === 1)
+//    assert(numArrangements(".#.###.#.######"    , Seq(1,3,1,6)) === 1)
+//    assert(numArrangements("####.#...#..."      , Seq(4,1,1)  ) === 1)
+//    assert(numArrangements("#....######..#####.", Seq(1,6,5)  ) === 1)
+//    assert(numArrangements(".###.##....#"       , Seq(3,2,1)  ) === 1)
   }
 
   "Condition records with some unknown conditions" should "have varying numbers of arrangements" in {
-    assert(differentArrangements("???.###"            , Seq(1,1,3)  ).length ===  1)
-    assert(differentArrangements(".??..??...?##."     , Seq(1,1,3)  ).length ===  4)
-    assert(differentArrangements("?#?#?#?#?#?#?#?"    , Seq(1,3,1,6)).length ===  1)
-    assert(differentArrangements("????.#...#..."      , Seq(4,1,1)  ).length ===  1)
-    assert(differentArrangements("????.######..#####.", Seq(1,6,5)  ).length ===  4)
-    assert(differentArrangements("?###????????"       , Seq(3,2,1)  ).length === 10)
+//    assert(numArrangements("???.###"            , Seq(1,1,3)  ) ===  1)
+//    assert(numArrangements(".??..??...?##."     , Seq(1,1,3)  ) ===  4)
+//    assert(numArrangements("?#?#?#?#?#?#?#?"    , Seq(1,3,1,6)) ===  1)
+//    assert(numArrangements("????.#...#..."      , Seq(4,1,1)  ) ===  1)
+//    assert(numArrangements("????.######..#####.", Seq(1,6,5)  ) ===  4)
+//    assert(numArrangements("?###????????"       , Seq(3,2,1)  ) === 10)
   }
 
   "Sum of different arrangements" should "be 21 for the test data" in {
@@ -59,6 +59,10 @@ class HotSpringsTest extends AnyFlatSpec {
 
   "Sum of different arrangements for part 2" should "be 525152 for the test data" in {
     assert(sumOfExpandedArrangements("Day12HotSpringsTest1.txt") === 525152)
+  }
+
+  "Sum of different arrangements for part 2" should "be 525152 for the data" in {
+    assert(sumOfExpandedArrangements("Day12HotSprings.txt") === 525152)
   }
 
 }

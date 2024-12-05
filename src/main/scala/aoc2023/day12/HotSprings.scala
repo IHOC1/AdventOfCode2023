@@ -1,6 +1,7 @@
 package aoc2023.day12
 
 import scala.annotation.tailrec
+import scala.math
 
 class HotSprings {
 }
@@ -10,18 +11,76 @@ object HotSprings {
   def sumOfArrangements(filename: String): Long = {
     springData(parseFile(filename)).
       map((conditionRecordAndGroup: (String, Seq[Int])) =>
-        differentArrangements(conditionRecordAndGroup._1, conditionRecordAndGroup._2)).
-      map(_.length).
+        numArrangements(conditionRecordAndGroup._1, conditionRecordAndGroup._2)).
       sum
   }
 
   def sumOfExpandedArrangements(filename: String): Long = {
     springData(parseFile(filename)).
       map(data => expand(data)).
-      map((conditionRecordAndGroup: (String, Seq[Int])) =>
-        differentArrangements(conditionRecordAndGroup._1, conditionRecordAndGroup._2)).
-      map(_.length).
+      map((conditionRecordAndGroup: (String, Seq[Int])) => {
+        println(conditionRecordAndGroup)
+        numArrangements(conditionRecordAndGroup._1, conditionRecordAndGroup._2)
+      }).
       sum
+  }
+
+  def numArrangements(conditionRecord: String, contiguousGroups: Seq[Int]): Int = {
+    val trimmedConditionRecord = removeConsecutiveOperationalSprings(conditionRecord)
+//    println(trimmedConditionRecord)
+    numArrangements(trimmedConditionRecord.split("\\."), contiguousGroups)
+  }
+
+  def removeConsecutiveOperationalSprings(conditionRecord: String): String = {
+    if (conditionRecord.length == 1)
+      conditionRecord
+    else
+      if (conditionRecord.head == '.' && conditionRecord.tail.head == '.')
+        removeConsecutiveOperationalSprings(conditionRecord.tail)
+      else
+        conditionRecord.head + removeConsecutiveOperationalSprings(conditionRecord.tail)
+  }
+  def numArrangements(conditionRecord: Array[String], contiguousGroups: Seq[Int]): Int = {
+    if (conditionRecord.isEmpty && contiguousGroups.nonEmpty)
+      return 0
+
+    // fail if there are is not enough space left to accommodate all remaining contiguousGroups
+    // Is this a generification of the guard clause above?
+
+    val firstConditionRecord = conditionRecord.head
+    // If contiguous group fits... May need to do more about matching???
+    if (firstConditionRecord.length >= contiguousGroups.head + 1) {
+      // Loop over starting positions and see if it fits to existing '#'
+      // If fits
+      // recurse with remaining piece from firstConditionRecord and the tail of the contiguousGroups
+      // else
+      // skip to next?
+    }
+
+    0
+  }
+
+  def numArrangementsPython(conditionRecord: String, size: Int, contiguousGroups: Seq[Int]): Int = {
+    if (contiguousGroups.isEmpty)
+      return (if (conditionRecord.forall(_ != '#')) 1 else 0)
+
+    val group = contiguousGroups.head
+    val remainingGroups = contiguousGroups.tail
+    val requiredSpace = remainingGroups.sum + remainingGroups.length
+
+    (0 until (size - requiredSpace - group + 1)).map((before: Int) => {
+      val candidate = chars(before, '.') + chars(group, '#') + "."
+
+      if (candidate.zip(conditionRecord).forall((pair: (Char, Char)) => pair._1 == pair._2 || pair._2 == '?'))
+        numArrangementsPython(conditionRecord.substring(math.min(candidate.length, conditionRecord.length)),
+                                  size - group - before - 1,
+                                  remainingGroups)
+      else 0
+    }).sum
+  }
+
+  private def chars(before: Int, c: Char) = {
+    (0 until before).map(_ => c).mkString("")
   }
 
   def expand(data: (String, Seq[Int])): (String, Seq[Int]) = {
