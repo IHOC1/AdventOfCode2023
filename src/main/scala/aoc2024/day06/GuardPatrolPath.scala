@@ -15,8 +15,6 @@ class GuardPatrolPath {
     val (before, after) = lines.splitAt(guardRow)
     val suitManufacturingLab = before ++ Seq(after.head.replace('^', '.')) ++ after.tail
 
-    //    suitManufacturingLab.foreach(l => println(l))
-
     totalPositionsVisited(distinctPatrolPositions(suitManufacturingLab.map(line => line.toArray).toArray, (guardCol, guardRow), 'N'))
   }
 
