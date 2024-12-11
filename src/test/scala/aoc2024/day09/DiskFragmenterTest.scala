@@ -30,15 +30,17 @@ class DiskFragmenterTest extends AnyFlatSpec {
   }
 
   "ForwardIterator1" should "turn 12345 into 0..111....22222" in {
-    assert(new DiskFragmenter().forwardIterator("12345").map(_._1).foldLeft("")((str: String, fileIdOrFree: String) => str + fileIdOrFree) == "0..111....22222")
-    assert(new DiskFragmenter().forwardIterator("12345").toSeq.head == ("0", 0))
-    assert(new DiskFragmenter().forwardIterator("12345").toSeq.last == ("2", 14))
+    assert(iteratorToString(new DiskFragmenter().forwardIterator("12345")) == "0..111....22222")
+    assert(new DiskFragmenter().forwardIterator("12345").toSeq.head == (0, 0))
+    assert(new DiskFragmenter().forwardIterator("12345").toSeq.last == (2, 14))
   }
 
   "ReverseIterator1" should "turn 12345 into 0..111....22222" in {
-    new DiskFragmenter().reverseIterator("12345").foreach(el => println(el))
-    assert(new DiskFragmenter().reverseIterator("12345").map(_._1).foldLeft("")((str: String, fileIdOrFree: String) => str + fileIdOrFree) == "222221110")
-    assert(new DiskFragmenter().reverseIterator("12345").toSeq.head == ("2", 14))
-    assert(new DiskFragmenter().reverseIterator("12345").toSeq.last == ("0", 0))
+    assert(iteratorToString(new DiskFragmenter().reverseIterator("12345")) == "222221110")
+    assert(new DiskFragmenter().reverseIterator("12345").toSeq.head == (2, 14))
+    assert(new DiskFragmenter().reverseIterator("12345").toSeq.last == (0, 0))
   }
+
+  private def iteratorToString(it: Iterator[(Int, Int)]) =
+    it.map(_._1).foldLeft("")((str: String, fileIdOrFree: Int) => str + (if (fileIdOrFree == -1) "." else fileIdOrFree.toString))
 }

@@ -24,7 +24,7 @@ class DiskFragmenter {
 
     while (fwdIt.hasNext && revIt.hasNext && !ended) {
       val fwd = fwdIt.next()
-      val fileIdAndIndex = if (fwd._1 == ".") {
+      val fileIdAndIndex = if (fwd._1 == -1) {
         val rev = revIt.next()
         revIndex = rev._2
         (rev._1, fwd._2)
@@ -35,7 +35,7 @@ class DiskFragmenter {
       if (fwd._2 >= revIndex)
         ended = true
       else
-        checksum += fileIdAndIndex._1.toInt * fileIdAndIndex._2
+        checksum += fileIdAndIndex._1 * fileIdAndIndex._2
     }
     checksum
   }
@@ -43,7 +43,7 @@ class DiskFragmenter {
   def fullLength(discMap: String): Int =
     discMap.iterator.map(_.toString.toInt).sum
 
-  def forwardIterator(diskMap: String): Iterator[(String, Int)] = {
+  def forwardIterator(diskMap: String): Iterator[(Int, Int)] = {
     diskMap.iterator.
       zipWithIndex.
       flatMap { case(c, i) =>
@@ -53,7 +53,7 @@ class DiskFragmenter {
       .zipWithIndex
   }
 
-  def reverseIterator(diskMap: String): Iterator[(String, Int)] = {
+  def reverseIterator(diskMap: String): Iterator[(Int, Int)] = {
     def fullDiscLength: Int = fullLength(diskMap)
     diskMap.
       reverseIterator.
@@ -64,13 +64,11 @@ class DiskFragmenter {
       }.
       zipWithIndex.
       map {case (c, i) => (c, fullDiscLength - i - 1)}.
-      filter(_._1 != ".")
+      filter(_._1 != -1)
   }
 
-  private def idNumberOrFree(diskMapIndex: Int): String = {
-    // Could maybe save some computation by not going via strings???
-    if (diskMapIndex % 2 == 0) (diskMapIndex / 2).toString else "."
-  }
+  private def idNumberOrFree(diskMapIndex: Int): Int =
+    if (diskMapIndex % 2 == 0) diskMapIndex / 2 else -1
 
 }
 
