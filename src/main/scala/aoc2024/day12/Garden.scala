@@ -1,5 +1,6 @@
 package aoc2024.day12
 
+import aoc2024.day12.Garden.{down, left, right, up}
 import utils.ParseFile.parseFile
 
 class Garden(file: String) {
@@ -10,6 +11,13 @@ class Garden(file: String) {
     gardenAreas(allLocations()).
       toSeq.
       map(region => region.cost).
+      sum
+  }
+
+  def fencePriceBulkDiscount(): Int = {
+    gardenAreas(allLocations()).
+      toSeq.
+      map(region => region.bulkDiscountCost).
       sum
   }
 
@@ -46,15 +54,21 @@ class Garden(file: String) {
 case class Point(row: Int, col: Int) {
 
   def neighbours(): Set[Point] = Set(
-    Point(row + 1, col + 0),
-    Point(row - 1, col + 0),
-    Point(row + 0, col + 1),
-    Point(row + 0, col - 1)
+    this.plus(down),
+    this.plus(up),
+    this.plus(right),
+    this.plus(left)
   )
 
   def letter(garden: Array[Array[Char]]): Char = garden(row)(col)
 
+  def plus(dir: Direction): Point =
+    Point(row + dir.row,
+          col + dir.col)
 }
+
+
+case class Direction(row : Int, col : Int)
 
 case class Region(points: Set[Point]) {
 
@@ -70,4 +84,47 @@ case class Region(points: Set[Point]) {
       count(neighbour => !points.contains(neighbour))
 
   def cost: Int = area * perimeter
+
+  def bulkDiscountCost: Int  = area * sides.size
+
+  def sides: Set[Side] = {
+    points.
+      flatMap(point =>
+        Set(up, down, left, right).map(dir => (point, dir))).
+      filter { case (point, dir) => !points.contains(point.plus(dir))}.
+      groupBy{ case (point, dir) => dir}.
+      map { case (dir, pointsAndDirs) => (dir, pointsAndDirs.map{ case (point, _) => point}) }.
+      flatMap { case (dir, points) =>
+        val startPoint = Set(points.head)
+        findSides(startPoint, startPoint, points.diff(startPoint), dir)
+      }.
+      toSet
+  }
+
+  private def findSides(searchPoints: Set[Point],
+                        sideSoFar: Set[Point],
+                        remainingPoints: Set[Point],
+                        dir: Direction): Set[Side] = {
+    if (remainingPoints.isEmpty)
+      Set(Side(searchPoints, dir))
+    else if (searchPoints.isEmpty) {
+      val startPoint = Set(remainingPoints.head)
+      Set(Side(sideSoFar, dir)) ++ findSides(startPoint, startPoint, remainingPoints.diff(startPoint), dir)
+    }
+    else {
+      val neighboursAlsoInSide = searchPoints.
+        flatMap(point => point.neighbours().intersect(remainingPoints))
+      findSides(neighboursAlsoInSide, sideSoFar.union(neighboursAlsoInSide), remainingPoints.diff(neighboursAlsoInSide), dir)
+    }
+  }
+
+}
+
+case class Side(points: Set[Point], dir: Direction)
+
+object Garden {
+  val down  = Direction( 1,  0)
+  val up    = Direction(-1,  0)
+  val right = Direction( 0,  1)
+  val left  = Direction( 0, -1)
 }
