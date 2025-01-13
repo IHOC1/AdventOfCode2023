@@ -38,8 +38,7 @@ class AntennaAntinodes {
         antennaLocations.
           filter(secondAntenna => secondAntenna != firstAntenna).
           flatMap(secondAntenna =>
-              Set(firstAntenna.antinodeLocation(secondAntenna),
-                  secondAntenna.antinodeLocation(firstAntenna))
+              Set(firstAntenna.antinodeLocation(secondAntenna))
           ))
   }
 
@@ -49,8 +48,7 @@ class AntennaAntinodes {
         antennaLocations.
           filter(secondAntenna => secondAntenna != firstAntenna).
           flatMap(secondAntenna =>
-            firstAntenna.multipleAntinodeLocation(secondAntenna, rowLimit, colLimit) ++
-            secondAntenna.multipleAntinodeLocation(firstAntenna, rowLimit, colLimit)
+            firstAntenna.multipleAntinodeLocation(secondAntenna, rowLimit, colLimit)
           ))
   }
 
